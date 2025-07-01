@@ -2,7 +2,7 @@ Welcome to my personal portfolio website built with **HTML**, **CSS**, and **Jav
 
 ## 📌 Live Preview
 
-👉 [View Portfolio Online](#) *(Replace with your deployed URL)*
+👉 [View Portfolio Online](#) *(https://portfolio-github-io-git-main-uzair-moazzams-projects.vercel.app)*
 
 ---
 
@@ -42,15 +42,6 @@ Welcome to my personal portfolio website built with **HTML**, **CSS**, and **Jav
 
 ---
 
-## 📸 Screenshots
-
-### 🔻 Hero Section  
-![Hero Section](assets/profile.jpeg)
-
-### 🔻 Portfolio Section  
-![Portfolio Project](assets/charity-system.png)
-
----
 
 ## 🧑‍💻 About Me
 
