@@ -494,6 +494,10 @@
             text-align: center;
             margin-bottom: 2rem;
             max-width: 600px;
+            overflow-wrap: break-word;
+            /* New property added */
+            word-break: break-word;
+            /* New property added */
         }
 
         .portfolio-tech {
@@ -570,14 +574,13 @@
             margin: 0 auto;
         }
 
-
         .portfolio-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 10, 10, 0.85);
+            background: rgba(10, 10, 10, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -586,23 +589,10 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             z-index: 2;
-            /* Higher than image */
+            overflow-y: auto;
+            /* New property added */
         }
 
-        .project-description {
-            background-color: rgba(0, 0, 0, 0.7);
-            /* Dark transparent background */
-            color: #fff;
-            /* White text for visibility */
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 16px;
-            line-height: 1.6;
-            max-width: 800px;
-            /* Optional: limits width */
-            margin: 0 auto;
-            /* Optional: centers it */
-        }
 
 
         /* Hover effects */
@@ -782,6 +772,15 @@
                 margin-top: 1rem;
             }
 
+            .portfolio-overlay {
+                padding: 1.5rem;
+            }
+
+            .portfolio-overlay p {
+                font-size: 0.95rem;
+                max-width: 90%;
+            }
+
 
 
 
@@ -836,6 +835,10 @@
 
             .portfolio-overlay p {
                 font-size: 0.85rem;
+            }
+
+            .portfolio-overlay {
+                padding: 1rem;
             }
 
             .btn,
@@ -1001,6 +1004,7 @@
     </section>
 
     <!-- Portfolio Section -->
+    <!-- Portfolio Section -->
     <section class="section" id="portfolio">
         <div class="section-title">
             <h2>My Projects</h2>
@@ -1010,22 +1014,18 @@
                 <img src="charity-system.png" alt="Online Charity System" class="portfolio-img">
                 <div class="portfolio-overlay">
                     <h3>Online Charity Donation System</h3>
-                    <div class="project-description">
                     <p>This MERN-based web application is designed to support online charity operations through five
                         core forms: Login, Register, Feedback, Create Campaign, and Track Campaign. Each form is fully
                         functional and connected to a MongoDB database for persistent data storage. The application
                         handles user input, stores campaign and user-related data, and provides a smooth interface for
                         interacting with the system. While the app doesn't include full payment integration or advanced
                         donation tracking yet, it lays a strong foundation for future scalability and feature
-                        enhancement..</p>
-                        </div>
+                        enhancement.</p>
                     <div class="portfolio-tech">
                         <span class="tech-tag">MongoDB</span>
                         <span class="tech-tag">Express.js</span>
                         <span class="tech-tag">React.js</span>
                         <span class="tech-tag">Node.js</span>
-
-
                     </div>
                     <div class="portfolio-links">
                         <a href="https://github.com/yourusername/charity-system" target="_blank" class="btn-code">
