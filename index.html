@@ -544,29 +544,31 @@
             box-shadow: 0 5px 15px rgba(255, 45, 45, 0.3);
         }
 
-.portfolio-item {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-  text-align: center;
-}
+        .portfolio-item {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
 
-.portfolio-img {
-  width: 100%; /* Fully utilize available space */
-  max-width: 900px; /* Allow larger size */
-  height: auto;
-  display: block;
-  object-fit: contain;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 45, 45, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 1;
-  margin: 0 auto;
-}
+        .portfolio-img {
+            width: 100%;
+            /* Fully utilize available space */
+            max-width: 900px;
+            /* Allow larger size */
+            height: auto;
+            display: block;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 45, 45, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+        }
 
 
 
@@ -766,64 +768,86 @@
                 margin-top: 1rem;
             }
 
-    
+            .portfolio-overlay {
+                overflow-y: auto;
+                max-height: 100%;
+                padding: 1rem;
+            }
 
+            .portfolio-item {
+                height: auto;
+                max-height: none;
+            }
+
+            .portfolio-img {
+                height: auto;
+                max-height: 300px;
+            }
 
         }
 
-@media (max-width: 576px) {
-    .profile-img {
-        width: 250px;
-        height: 250px;
-    }
+        @media (max-width: 576px) {
+            .portfolio-img {
+                height: auto;
+                max-height: 300px;
+            }
 
-    .portfolio-overlay h3 {
-        font-size: 1.5rem;
-    }
+            .portfolio-overlay h3 {
+                font-size: 1.5rem;
+            }
 
-    .portfolio-overlay p {
-        font-size: 0.9rem;
-    }
+            .portfolio-overlay p {
+                font-size: 0.9rem;
+            }
 
-    .portfolio-links {
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-    }
+            .portfolio-links {
+                flex-direction: column;
+                width: 100%;
+                align-items: center;
+            }
 
-    .portfolio-links a {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 0.5rem;
-    }
+            .portfolio-links a {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
 
-    .portfolio-item {
-        height: auto; /* Make container height flexible */
-    }
+            .portfolio-item {
+                height: auto;
+                max-height: none;
+            }
 
-    .portfolio-img {
-        height: auto;
-        max-height: 100%;
-        object-fit: contain;
-    }
-    .portfolio-overlay {
-        padding: 1rem;
-    }
-}
-@media (max-width: 480px) {
-  .portfolio-overlay h3 {
-    font-size: 1.2rem;
-  }
-  .portfolio-overlay p {
-    font-size: 0.85rem;
-  }
-  .btn,
-  .btn-outline {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-  }
-}
 
+            .portfolio-img {
+                height: auto;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+            .portfolio-overlay {
+                overflow-y: auto;
+                max-height: 100%;
+                padding: 1rem;
+
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-overlay h3 {
+                font-size: 1.2rem;
+            }
+
+            .portfolio-overlay p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .btn,
+            .btn-outline {
+                font-size: 0.9rem;
+                padding: 0.6rem 1.2rem;
+            }
+        }
     </style>
 </head>
 
@@ -987,10 +1011,14 @@
         </div>
         <div class="portfolio-container">
             <div class="portfolio-item">
-               <img src="charity-system.png" alt="Online Charity System" class="portfolio-img">
+                <img src="charity-system.png" alt="Online Charity System" class="portfolio-img">
                 <div class="portfolio-overlay">
                     <h3>Online Charity Donation System</h3>
-                    <p>This MERN stack charity application features five core functions: Login, Register, Feedback, Campaign Creation, and Campaign Tracking. All components are fully functional with MongoDB data storage. The system efficiently manages user data and campaign information through an intuitive interface. While currently lacking payment integration and advanced tracking, it's built for easy future expansion..</p>
+                    <p>This MERN stack charity application features five core functions: Login, Register, Feedback,
+                        Campaign Creation, and Campaign Tracking. All components are fully functional with MongoDB data
+                        storage. The system efficiently manages user data and campaign information through an intuitive
+                        interface. While currently lacking payment integration and advanced tracking, it's built for
+                        easy future expansion..</p>
                     <div class="portfolio-tech">
                         <span class="tech-tag">MongoDB</span>
                         <span class="tech-tag">Express.js</span>
