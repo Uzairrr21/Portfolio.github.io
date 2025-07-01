@@ -8,14 +8,14 @@ Welcome to my personal portfolio website built with **HTML**, **CSS**, and **Jav
 
 ## ✨ Features
 
-- 🎯 Responsive Design (Mobile-friendly and Retina-ready)
-- 🌙 Dark Theme with Red Accents for a modern aesthetic
-- 🧠 Skill Section with animated progress bars
-- 💼 Project Portfolio (includes tech stack, code link)
-- 📄 Downloadable Resume (PDF)
-- 📱 Social Media Integration (LinkedIn, GitHub)
-- 🔒 Sticky Navigation with scroll animations
-- 📧 Contact Section with Email, Phone, and Location
+-  Responsive Design (Mobile-friendly and Retina-ready)
+-  Dark Theme with Red Accents for a modern aesthetic
+-  Skill Section with animated progress bars
+-  Project Portfolio (includes tech stack, code link)
+-  Downloadable Resume (PDF)
+-  Social Media Integration (LinkedIn, GitHub)
+-  Sticky Navigation with scroll animations
+-  Contact Section with Email, Phone, and Location
 
 ---
 
@@ -45,10 +45,10 @@ Welcome to my personal portfolio website built with **HTML**, **CSS**, and **Jav
 ## 📸 Screenshots
 
 ### 🔻 Hero Section  
-![Hero Section](assets/hero-section.png)
+![Hero Section](assets/profile.jpeg)
 
 ### 🔻 Portfolio Section  
-![Portfolio Project](assets/portfolio-section.png)
+![Portfolio Project](assets/charity-system.png)
 
 ---
 
@@ -58,20 +58,6 @@ I'm an intermediate **MERN Stack Developer** passionate about creating scalable 
 
 ---
 
-## 🚀 How to Use Locally
-
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/Uzairrr21/portfolio-website.git
-   cd portfolio-website
-   ```
-
-2. Open the file in a browser:
-   ```bash
-   double-click index.html
-   ```
-
----
 
 ## 🔗 Connect With Me
 
