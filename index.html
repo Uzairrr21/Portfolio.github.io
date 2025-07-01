@@ -462,43 +462,24 @@
             display: block;
         }
 
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            padding: 2rem;
-        }
 
         .portfolio-item:hover .portfolio-overlay {
             opacity: 1;
         }
 
         .portfolio-overlay h3 {
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
 
         .portfolio-overlay p {
             color: var(--gray);
-            text-align: center;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            overflow-wrap: break-word;
-            /* New property added */
-            word-break: break-word;
-            /* New property added */
+            text-align: left;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 1rem;
         }
+
 
         .portfolio-tech {
             display: flex;
@@ -590,8 +571,8 @@
             transition: opacity 0.3s ease;
             z-index: 2;
             overflow-y: auto;
-            /* New property added */
         }
+
 
 
 
@@ -657,6 +638,14 @@
         .contact-card p {
             color: var(--gray);
         }
+
+        .portfolio-content {
+            max-width: 800px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
 
         /* Footer */
         footer {
@@ -773,12 +762,17 @@
             }
 
             .portfolio-overlay {
-                padding: 1.5rem;
+                padding: 1rem;
             }
 
             .portfolio-overlay p {
                 font-size: 0.95rem;
-                max-width: 90%;
+                text-align: left;
+            }
+
+            .portfolio-content {
+                width: 95%;
+                padding: 0.5rem;
             }
 
 
@@ -793,7 +787,7 @@
             }
 
             .portfolio-overlay h3 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
             .portfolio-overlay p {
@@ -815,6 +809,11 @@
             .portfolio-item {
                 height: auto;
                 /* Make container height flexible */
+            }
+
+            .tech-tag {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
             }
 
             .portfolio-img {
@@ -1003,8 +1002,9 @@
         </div>
     </section>
 
+
     <!-- Portfolio Section -->
-    <!-- Portfolio Section -->
+    <!-- Updated Portfolio Section -->
     <section class="section" id="portfolio">
         <div class="section-title">
             <h2>My Projects</h2>
@@ -1013,24 +1013,26 @@
             <div class="portfolio-item">
                 <img src="charity-system.png" alt="Online Charity System" class="portfolio-img">
                 <div class="portfolio-overlay">
-                    <h3>Online Charity Donation System</h3>
-                    <p>This MERN-based web application is designed to support online charity operations through five
-                        core forms: Login, Register, Feedback, Create Campaign, and Track Campaign. Each form is fully
-                        functional and connected to a MongoDB database for persistent data storage. The application
-                        handles user input, stores campaign and user-related data, and provides a smooth interface for
-                        interacting with the system. While the app doesn't include full payment integration or advanced
-                        donation tracking yet, it lays a strong foundation for future scalability and feature
-                        enhancement.</p>
-                    <div class="portfolio-tech">
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">Express.js</span>
-                        <span class="tech-tag">React.js</span>
-                        <span class="tech-tag">Node.js</span>
-                    </div>
-                    <div class="portfolio-links">
-                        <a href="https://github.com/yourusername/charity-system" target="_blank" class="btn-code">
-                            <i class="fab fa-github"></i> View Code
-                        </a>
+                    <div class="portfolio-content"> <!-- Added container div -->
+                        <h3>Online Charity Donation System</h3>
+                        <p>This MERN-based web application supports online charity operations with five core forms:
+                            Login, Register, Feedback, Create Campaign, and Track Campaign. Each form is fully
+                            functional and connected to a MongoDB database for persistent data storage.</p>
+                        <p>The application handles user input, stores campaign and user-related data, and provides a
+                            smooth interface for interacting with the system. While it doesn't yet include full payment
+                            integration or advanced donation tracking, it lays a strong foundation for future
+                            scalability and feature enhancement.</p>
+                        <div class="portfolio-tech">
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Express.js</span>
+                            <span class="tech-tag">React.js</span>
+                            <span class="tech-tag">Node.js</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="https://github.com/yourusername/charity-system" target="_blank" class="btn-code">
+                                <i class="fab fa-github"></i> View Code
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
