@@ -2,7 +2,7 @@ Welcome to my personal portfolio website built with **HTML**, **CSS**, and **Jav
 
 ## 📌 Live Preview
 
-👉 [View Portfolio Online](#) *(https://portfolio-github-io-git-main-uzair-moazzams-projects.vercel.app)*
+👉 View Portfolio Online *(https://portfolio-github-io-git-main-uzair-moazzams-projects.vercel.app)*
 
 ---
 
