@@ -2,6 +2,8 @@
 
 A premium, recruiter-focused AI/ML Engineering portfolio built with vanilla HTML, CSS, and JavaScript + Three.js.
 
+**Live Preview:** https://portfolio-github-io-git-main-uzair-moazzams-projects.vercel.app/
+
 ---
 
 ## Folder Structure
