@@ -1,1174 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uzair Moazzam | MERN Stack Developer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #ff2d2d;
-            --secondary: #cc0000;
-            --dark: #0a0a0a;
-            --darker: #000000;
-            --light: #f0f0f0;
-            --accent: #ff6b6b;
-            --gray: #a0a0a0;
-            --card-bg: #1a1a1a;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-        }
-
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(10, 10, 10, 0.95);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            padding: 1rem 5%;
-            background-color: rgba(0, 0, 0, 0.98);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-shadow: 0 0 10px rgba(255, 45, 45, 0.5);
-        }
-
-        .logo span {
-            color: var(--light);
-            text-shadow: none;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2.5rem;
-        }
-
-        nav ul li a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 10px rgba(255, 45, 45, 0.5);
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            bottom: -5px;
-            left: 0;
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--light);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 5%;
-            padding-top: 80px;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 45, 45, 0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .hero-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-text {
-            flex: 1;
-            padding-right: 2rem;
-        }
-
-        .hero-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--light);
-        }
-
-        .hero-text h1 span {
-            color: var(--primary);
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero-text h2 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            color: var(--gray);
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-            max-width: 600px;
-            color: var(--gray);
-        }
-
-        .social-links {
-            display: flex;
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            margin-right: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 45, 45, 0.3);
-        }
-
-        .social-links a:hover {
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 45, 45, 0.5);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 45, 45, 0.3);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 45, 45, 0.5);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            margin-left: 1rem;
-        }
-
-        .btn-outline:hover {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            position: relative;
-        }
-
-        .profile-img {
-            width: 350px;
-            height: 350px;
-            border-radius: 20px;
-            object-fit: cover;
-            border: 5px solid rgba(255, 45, 45, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-            transition: all 0.3s ease;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.02) rotateY(10deg);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px) rotateY(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotateY(5deg);
-            }
-
-            100% {
-                transform: translateY(0px) rotateY(0deg);
-            }
-        }
-
-        /* About Section */
-        .section {
-            padding: 6rem 5%;
-            position: relative;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--light);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 1rem;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            width: 50%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            bottom: 0;
-            left: 25%;
-            border-radius: 2px;
-        }
-
-        .about-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .about-text {
-            flex: 1;
-            padding-right: 3rem;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--light);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-            color: var(--gray);
-        }
-
-        .skills {
-            flex: 1;
-        }
-
-        .skill-item {
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-        }
-
-        .skill-bar {
-            height: 10px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 5px;
-            transition: width 1s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.2),
-                    transparent);
-            animation: shine 2s infinite;
-        }
-
-        @keyframes shine {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        /* Services Section */
-        .services {
-            background-color: var(--darker);
-        }
-
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .service-card {
-            background-color: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            text-align: center;
-            border: 1px solid rgba(255, 45, 45, 0.1);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(255, 45, 45, 0.3);
-            border: 1px solid rgba(255, 45, 45, 0.3);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .service-card p {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-        }
-
-        /* Portfolio Section */
-        .portfolio-container {
-            display: flex;
-            justify-content: center;
-        }
-
-        .portfolio-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            max-width: 800px;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .portfolio-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(255, 45, 45, 0.4);
-        }
-
-        .portfolio-img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            padding: 2rem;
-        }
-
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
-        }
-
-        .portfolio-overlay h3 {
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .portfolio-overlay p {
-            color: var(--gray);
-            text-align: center;
-            margin-bottom: 2rem;
-            max-width: 600px;
-        }
-
-        .portfolio-tech {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .tech-tag {
-            background: rgba(255, 45, 45, 0.2);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            border: 1px solid var(--primary);
-        }
-
-        .portfolio-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .portfolio-links a {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .portfolio-links .btn-live {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .portfolio-links .btn-code {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .portfolio-links a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 45, 45, 0.3);
-        }
-
-        .portfolio-item {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        .portfolio-img {
-            width: 100%;
-            /* Fully utilize available space */
-            max-width: 900px;
-            /* Allow larger size */
-            height: auto;
-            display: block;
-            object-fit: contain;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 45, 45, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-            margin: 0 auto;
-        }
-
-
-
-
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 10, 0.85);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 2;
-            /* Higher than image */
-        }
-
-        /* Hover effects */
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
-        }
-
-        .portfolio-item:hover .portfolio-img {
-            filter: brightness(0.6);
-            /* Darkens image slightly when overlay appears */
-        }
-
-        /* Ensure clickable elements work */
-        .portfolio-links a {
-            position: relative;
-            z-index: 3;
-        }
-
-        /* Contact Section */
-        .contact {
-            background-color: var(--darker);
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .contact-card {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 45, 45, 0.1);
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 45, 45, 0.3);
-            border: 1px solid rgba(255, 45, 45, 0.3);
-        }
-
-        .contact-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .contact-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-        }
-
-        .contact-card p {
-            color: var(--gray);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--darker);
-            color: white;
-            text-align: center;
-            padding: 3rem 0;
-            border-top: 1px solid rgba(255, 45, 45, 0.1);
-        }
-
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .footer-logo span {
-            color: var(--primary);
-        }
-
-        .footer-social {
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-social a {
-            color: var(--gray);
-            font-size: 1.5rem;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-
-        .portfolio-description-scroll {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 3rem;
-            }
-
-            .social-links {
-                justify-content: center;
-            }
-
-            .about-content {
-                flex-direction: column;
-            }
-
-            .about-text {
-                padding-right: 0;
-                margin-bottom: 3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            nav {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 80%;
-                height: calc(100vh - 80px);
-                background-color: var(--card-bg);
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-                transition: all 0.3s ease;
-                z-index: 999;
-            }
-
-            nav.active {
-                left: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding: 2rem;
-            }
-
-            nav ul li {
-                margin: 1rem 0;
-            }
-
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-text h2 {
-                font-size: 1.5rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .btn-outline {
-                margin-left: 0;
-                margin-top: 1rem;
-            }
-
-            .portfolio-overlay {
-                overflow-y: auto;
-                max-height: 100%;
-                padding: 1rem;
-            }
-
-            .portfolio-item {
-                height: auto;
-                max-height: none;
-            }
-
-            .portfolio-img {
-                height: auto;
-                max-height: 300px;
-            }
-
-        }
-
-        @media (max-width: 576px) {
-            .portfolio-img {
-                height: auto;
-                max-height: 300px;
-            }
-
-
-            .portfolio-overlay h3 {
-                font-size: 1.3rem;
-                text-align: center;
-            }
-
-            .portfolio-overlay p {
-                font-size: 0.95rem;
-                text-align: center;
-                line-height: 1.4;
-                margin-bottom: 1rem;
-            }
-
-            .portfolio-links {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .portfolio-links a {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-
-            .portfolio-item {
-                flex-direction: column;
-                height: auto;
-                max-height: none;
-            }
-
-            .portfolio-img {
-                width: 100%;
-                height: auto;
-                max-height: 200px;
-                object-fit: contain;
-                border-radius: 10px;
-            }
-
-            .portfolio-overlay {
-                position: relative;
-                background: transparent;
-                opacity: 1 !important;
-                padding: 1rem;
-                max-height: none;
-                overflow: visible;
-                z-index: 1;
-                display: block;
-            }
-
-            .portfolio-tech {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .portfolio-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .portfolio-links a {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .portfolio-overlay h3 {
-                font-size: 1.2rem;
-            }
-
-            .portfolio-overlay p {
-                font-size: 0.9rem;
-                line-height: 1.4;
-            }
-
-            .btn,
-            .btn-outline {
-                font-size: 0.9rem;
-                padding: 0.6rem 1.2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Uzair Moazzam — Junior AI/ML Engineer based in Lahore, Pakistan. PyTorch, Hugging Face, MERN stack. Open to work."/>
+  <meta name="keywords" content="Uzair Moazzam, AI Engineer, ML Engineer, Lahore Pakistan, PyTorch, Deep Learning, NLP, MERN Stack Developer"/>
+  <meta name="author" content="Uzair Moazzam"/>
+  <title>Uzair Moazzam · AI/ML Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
-
 <body>
-    <!-- Header -->
-    <header id="header">
-        <a href="#" class="logo">Uzair <span>Moazzam</span></a>
-        <div class="menu-toggle">
-            <i class="fas fa-bars"></i>
+
+<!-- ═══════════════════════════ LOADER ═══════════════════════════ -->
+<div id="loader">
+  <div class="ldr-wrap">
+    <svg class="ldr-ring" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" fill="none" stroke="url(#lg)" stroke-width="3" stroke-dasharray="200" stroke-dashoffset="200" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="200" to="0" dur="1.6s" fill="freeze"/></circle><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs></svg>
+    <span class="ldr-label">Loading</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ CURSOR ═══════════════════════════ -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- ═══════════════════════════ WEBGL CANVAS ═══════════════════════ -->
+<canvas id="webgl"></canvas>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════════ -->
+<header id="hdr">
+  <nav class="nav-inner">
+    <a href="#home" class="brand">
+      <span class="brand-lt">&lt;</span>Uzair<span class="brand-dot">/</span><span class="brand-rt">&gt;</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about"      class="nl">About</a></li>
+      <li><a href="#skills"     class="nl">Skills</a></li>
+      <li><a href="#experience" class="nl">Experience</a></li>
+      <li><a href="#projects"   class="nl">Projects</a></li>
+      <li><a href="#contact"    class="nl">Contact</a></li>
+    </ul>
+    <a href="assets/Uzair_Moazzam_CV.pdf" download class="btn-nav mag">Download CV</a>
+    <button class="ham" id="ham" aria-label="menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════════ -->
+<section id="home" class="hero">
+  <div class="hero-left">
+    <p class="hero-status fade-in"><span class="status-dot"></span> Open to Junior AI/ML roles — Lahore, PK</p>
+    <h1 class="hero-h1 fade-in">
+      Hi, I'm<br>
+      <span class="name-gradient">Uzair Moazzam</span>
+    </h1>
+    <p class="hero-role fade-in"><span class="mono">&gt; </span><span id="typed"></span><span class="cursor-blink">|</span></p>
+    <p class="hero-desc fade-in">
+      CS graduate who builds AI systems that actually ship — from transformer-based NLP to real-time computer vision pipelines.
+      Two internships. Two papers. 15+ projects. Ready to contribute from day one.
+    </p>
+    <div class="hero-btns fade-in">
+      <a href="#projects" class="btn-primary mag">See My Work</a>
+      <a href="#contact"  class="btn-ghost   mag">Hire Me</a>
+    </div>
+    <div class="hero-pills fade-in">
+      <span class="pill"><i class="fab fa-python"></i> Python</span>
+      <span class="pill"><i class="fas fa-fire"></i> PyTorch</span>
+      <span class="pill"><i class="fas fa-robot"></i> HuggingFace</span>
+      <span class="pill"><i class="fab fa-react"></i> React</span>
+      <span class="pill"><i class="fas fa-brain"></i> Deep Learning</span>
+    </div>
+  </div>
+
+  <div class="hero-right fade-in">
+    <!-- Profile photo slot -->
+    <div class="profile-frame" id="profileFrame">
+      <div class="profile-glow"></div>
+      <div class="profile-img-wrap">
+        <img src="assets/profile.jpeg" alt="Uzair Moazzam" class="profile-img"/>
+      </div>
+      <div class="profile-badge pb-top">AI Engineer</div>
+      <div class="profile-badge pb-bot">Open to Work ✦</div>
+      <!-- Orbiting icons -->
+      <div class="orb-item oi-1"><i class="fab fa-python"></i></div>
+      <div class="orb-item oi-2"><i class="fas fa-fire"></i></div>
+      <div class="orb-item oi-3"><i class="fab fa-react"></i></div>
+      <div class="orb-item oi-4"><i class="fas fa-database"></i></div>
+    </div>
+  </div>
+
+  <div class="hero-scroll"><div class="scroll-mouse"><div class="scroll-wheel"></div></div></div>
+</section>
+
+<!-- ═══════════════════════════ ABOUT ════════════════════════════ -->
+<section id="about" class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Who I am</span>
+      <h2>About Me</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal-l">
+        <p>I'm a <strong>fresh Computer Science graduate</strong> from Lahore Garrison University (CGPA 3.18 / 4.0, June 2026) based in Lahore, Pakistan, looking for my first full-time role as a Junior AI/ML Engineer.</p>
+        <p>I've spent the last two years building real systems — a production ASL translation platform deployed on Vercel and Hugging Face Spaces, a Swin Transformer model hitting 97.87% accuracy on agricultural disease detection, and 5 complete MERN applications shipped end-to-end in a 3-month internship.</p>
+        <p>What sets me apart is that I combine <strong>deep learning engineering</strong> with <strong>full-stack development</strong> — I can build the model, wrap it in a FastAPI backend, and ship the React frontend myself, without waiting on other teams.</p>
+        <div class="about-cta">
+          <a href="#contact" class="btn-primary mag">Email Me</a>
+          <a href="https://www.linkedin.com/in/uzair-moazzam" target="_blank" class="btn-ghost mag"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+          <a href="https://github.com/Uzairrr21" target="_blank" class="btn-ghost mag"><i class="fab fa-github"></i> GitHub</a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Skills</a></li>
-                <li><a href="#portfolio">Project</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Greetings Form <span><br>Uzair Moazzam</span></h1>
-                <h2>MERN Stack Developer</h2>
-                <p>Passionate about building web applications with MongoDB, Express.js, React.js, and Node.js. Currently
-                    seeking opportunities to grow my skills and contribute to meaningful projects.</p>
-                <div class="social-links">
-                    <a href="https://github.com/Uzairrr21" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/uzair-moazzam-3a4aa236b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                        target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <a href="#about" class="btn">Explore More</a>
-                <a href="Uzair_Moazzam_CV.pdf" download class="btn btn-outline">
-                    <i class="fas fa-download"></i> Download CV
-                </a>
-            </div>
-            <div class="hero-image">
-                <img src="profile.jpeg" alt="Uzair Moazzam" class="profile-img">
-            </div>
+      </div>
+      <div class="about-right reveal-r">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card glass"><span class="snum" data-target="15">0</span><span class="slabel">Projects Built</span></div>
+          <div class="stat-card glass"><span class="snum" data-target="2">0</span><span class="slabel">Internships</span></div>
+          <div class="stat-card glass"><span class="snum decimal" data-target="3.18">0</span><span class="slabel">CGPA / 4.0</span></div>
+          <div class="stat-card glass"><span class="snum" data-target="2">0</span><span class="slabel">Papers Under Review</span></div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="section" id="about">
-        <div class="section-title">
-            <h2>About Me</h2>
-        </div>
-        <div class="about-content">
-            <div class="about-text">
-                <h3>Intermediate MERN Developer</h3>
-                <p>I'm an enthusiastic developer with intermediate skills in the MERN stack (MongoDB, Express.js,
-                    React.js,
-                    and Node.js).
-                    applications.</p>
-                <p>Currently pursuing my degree in Computer Science, I'm passionate about web development and constantly
-                    learning new technologies to improve my skills.I'm particularly passionate about developing web
-                    solutions that address real user needs.
-                    that solve real-world problems.</p>
-                <p>Looking for an internship to apply my MERN stack knowledge in a professional environment. Eager to
-                    contribute to meaningful projects while learning from experienced developers. Excited to
-                    collaborate, grow my skills, and deliver impactful solutions..</p>
+        <!-- Education card -->
+        <div class="edu-card glass">
+          <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div>
+            <h3>BSc Computer Science</h3>
+            <p class="edu-school">Lahore Garrison University</p>
+            <p class="edu-meta mono">Sep 2022 – Jun 2026 · CGPA 3.18</p>
+            <div class="tag-row">
+              <span class="tag">Deep Learning</span><span class="tag">NLP</span><span class="tag">AI</span>
+              <span class="tag">Data Science</span><span class="tag">Distributed Systems</span><span class="tag">Security</span>
             </div>
-            <div class="skills">
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>HTML/CSS</span>
-                        <span>85%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>JavaScript</span>
-                        <span>80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>React</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>Node.js</span>
-                        <span>70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>MongoDB</span>
-                        <span>65%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 65%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">
-                        <span>Express.js</span>
-                        <span>70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Services Section -->
-    <section class="section services" id="services">
-        <div class="section-title">
-            <h2>My Skills</h2>
+<!-- ═══════════════════════════ SKILLS ═══════════════════════════ -->
+<section id="skills" class="section section-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Tech Stack</span>
+      <h2>Skills</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-col glass reveal">
+        <div class="sk-head"><div class="sk-ico"><i class="fas fa-brain"></i></div><h3>AI / ML</h3></div>
+        <div class="sk-tags">
+          <span class="stag primary">PyTorch</span>
+          <span class="stag primary">TensorFlow</span>
+          <span class="stag primary">Hugging Face Transformers</span>
+          <span class="stag primary">BERT / DistilBERT</span>
+          <span class="stag primary">Swin Transformer</span>
+          <span class="stag primary">Scikit-learn</span>
+          <span class="stag primary">XGBoost</span>
+          <span class="stag primary">SMOTE</span>
+          <span class="stag primary">Transfer Learning</span>
+          <span class="stag primary">Fine-Tuning (SFT/PEFT)</span>
+          <span class="stag primary">RAG</span>
+          <span class="stag primary">FAISS</span>
+          <span class="stag primary">LangChain</span>
+          <span class="stag primary">LangGraph</span>
+          <span class="stag primary">Grad-CAM</span>
+          <span class="stag primary">OpenCV</span>
+          <span class="stag primary">MediaPipe</span>
+          <span class="stag primary">Prompt Engineering</span>
         </div>
-        <div class="services-container">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>MERN Stack Development</h3>
-                <p>Building full-stack applications using MongoDB, Express.js, React.js, and Node.js with intermediate
-                    proficiency.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-laptop-code"></i>
-                </div>
-                <h3>Frontend Development</h3>
-                <p>Creating responsive and interactive user interfaces with React.js, HTML5, CSS3, and JavaScript.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-server"></i>
-                </div>
-                <h3>Backend Development</h3>
-                <p>Developing server-side applications with Node.js and Express.js, and working with MongoDB databases.
-                </p>
-            </div>
+      </div>
+
+      <div class="skill-col glass reveal">
+        <div class="sk-head"><div class="sk-ico cyan"><i class="fas fa-code"></i></div><h3>Languages</h3></div>
+        <div class="sk-tags">
+          <span class="stag cyan">Python</span>
+          <span class="stag cyan">JavaScript</span>
+          <span class="stag cyan">TypeScript</span>
+          <span class="stag cyan">C</span>
+          <span class="stag cyan">C++</span>
         </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section class="section" id="portfolio">
-        <div class="section-title">
-            <h2>My Projects</h2>
+        <div class="sk-head mt" style="margin-top:1.5rem"><div class="sk-ico green"><i class="fas fa-layer-group"></i></div><h3>Full-Stack</h3></div>
+        <div class="sk-tags">
+          <span class="stag green">React.js</span>
+          <span class="stag green">Node.js</span>
+          <span class="stag green">Express.js</span>
+          <span class="stag green">MongoDB</span>
+          <span class="stag green">MySQL</span>
+          <span class="stag green">REST APIs</span>
+          <span class="stag green">WebSockets</span>
+          <span class="stag green">JWT Auth</span>
+          <span class="stag green">Firebase</span>
+          <span class="stag green">TailwindCSS</span>
+          <span class="stag green">shadcn/ui</span>
+          <span class="stag green">FastAPI</span>
         </div>
-        <div class="portfolio-container">
-            <div class="portfolio-item">
-                <img src="charity-system.png" alt="Online Charity System" class="portfolio-img">
-                <div class="portfolio-overlay">
-                    <h3>Online Charity Donation System</h3>
-                    <div class="portfolio-description-scroll">
-                        <p>This MERN stack charity application features five core functions: Login, Register, Feedback,
-                            Campaign Creation, and Campaign Tracking. All components are fully functional with MongoDB
-                            data
-                            storage. The system efficiently manages user data and campaign information through an
-                            intuitive
-                            interface. While currently lacking payment integration and advanced tracking, it's built for
-                            easy future expansion..</p>
-                    </div>
-                    <div class="portfolio-tech">
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">Express.js</span>
-                        <span class="tech-tag">React.js</span>
-                        <span class="tech-tag">Node.js</span>
+      </div>
 
+      <div class="skill-col glass reveal">
+        <div class="sk-head"><div class="sk-ico amber"><i class="fas fa-tools"></i></div><h3>Tools & Platforms</h3></div>
+        <div class="sk-tags">
+          <span class="stag amber">Git / GitHub</span>
+          <span class="stag amber">Weights & Biases</span>
+          <span class="stag amber">Docker</span>
+          <span class="stag amber">Hugging Face Spaces</span>
+          <span class="stag amber">Vercel</span>
+          <span class="stag amber">Jupyter Notebook</span>
+          <span class="stag amber">Google Colab</span>
+          <span class="stag amber">Kaggle</span>
+          <span class="stag amber">VS Code</span>
+          <span class="stag amber">Overleaf</span>
+          <span class="stag amber">NumPy</span>
+          <span class="stag amber">Pandas</span>
+        </div>
+      </div>
 
-                    </div>
-                    <div class="portfolio-links">
-                        <a href="https://github.com/Uzairrr21/Online-Charity-System.github.io.git" target="_blank" class="btn-code">
-                            <i class="fab fa-github"></i> View Code
-                        </a>
-                    </div>
-                </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ EXPERIENCE ═══════════════════════ -->
+<section id="experience" class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Where I've worked</span>
+      <h2>Experience</h2>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item reveal-l">
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card glass">
+          <div class="tl-top">
+            <div>
+              <h3>AI/ML Engineer Intern</h3>
+              <p class="tl-company">Binary Brains <span class="badge onsite">On-site</span></p>
             </div>
+            <span class="tl-date mono">Nov 2025 – Feb 2026</span>
+          </div>
+          <ul class="tl-bullets">
+            <li>Built and deployed AI/ML pipelines using PyTorch and Hugging Face Transformers across 3 client projects — from raw data ingestion through to production model delivery.</li>
+            <li>Tracked 50+ experiments via Weights & Biases across NLP and computer vision workstreams, consolidating results into a single dashboard and cutting model selection time significantly.</li>
+            <li>Developed an Urdu Fake News Detection system combining DistilBERT embeddings with classical ML classifiers achieving <strong>83.33% accuracy</strong> on 5,000 articles; applied SMOTE oversampling to raise minority-class recall by 65 percentage points.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">Hugging Face</span><span class="tag">DistilBERT</span><span class="tag">SMOTE</span><span class="tag">W&B</span><span class="tag">NLP</span></div>
         </div>
-    </section>
+      </div>
 
-    <!-- Contact Section -->
-    <section class="section contact" id="contact">
-        <div class="section-title">
-            <h2>Contact Me</h2>
-        </div>
-        <div class="contact-info">
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <h3>Email</h3>
-                <p>umoazzam58@gmail.com</p>
+      <div class="tl-item reveal-r">
+        <div class="tl-line right"></div>
+        <div class="tl-dot right"></div>
+        <div class="tl-card glass">
+          <div class="tl-top">
+            <div>
+              <h3>MERN Stack Developer Intern</h3>
+              <p class="tl-company">Techtomyy <span class="badge remote">Remote</span></p>
             </div>
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <i class="fas fa-phone"></i>
-                </div>
-                <h3>Phone</h3>
-                <p>03019465045</p>
-            </div>
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <h3>Location</h3>
-                <p>Lahore, Pakistan</p>
-            </div>
+            <span class="tl-date mono">Jul 2025 – Sep 2025</span>
+          </div>
+          <ul class="tl-bullets">
+            <li>Built an e-commerce platform with cart and checkout flows, a real-time chat app using WebSockets, and an event management system with role-based access — all using React, Node.js, and MongoDB.</li>
+            <li>Developed geolocation and routing features for Road Link using the Google Maps API across 2 client deployments; built a charity platform with secure donation flows and JWT authentication.</li>
+            <li>Shipped all <strong>5 full systems independently</strong> from design to deployment within a single 3-month internship.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">React.js</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">WebSockets</span><span class="tag">JWT</span><span class="tag">Maps API</span></div>
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-logo">Uzair <span>Moazzam</span></div>
-        <div class="footer-social">
-            <a href="https://github.com/Uzairrr21" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/uzair-moazzam-3a4aa236b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PROJECTS ════════════════════════ -->
+<section id="projects" class="section section-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">What I've built</span>
+      <h2>Projects</h2>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs reveal">
+      <button class="ftab active" data-filter="all">All</button>
+      <button class="ftab" data-filter="ai">AI / ML</button>
+      <button class="ftab" data-filter="fullstack">Full-Stack</button>
+      <button class="ftab" data-filter="nlp">NLP</button>
+      <button class="ftab" data-filter="cv">Computer Vision</button>
+    </div>
+
+    <div class="proj-grid" id="projGrid">
+
+      <!-- ─── FEATURED: SignVerse ─── -->
+      <div class="proj-card glass featured reveal" data-cat="ai fullstack" data-modal="m-signverse">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge feat">★ Featured</span><span class="pbadge ai">AI/ML</span><span class="pbadge fs">Full-Stack</span></div>
+          <div class="pc-links">
+            <a href="https://github.com/Uzairrr21/SignVerse" target="_blank" class="ico-link mag" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://sign-verse-self.vercel.app/" target="_blank" class="ico-link mag" aria-label="Live"><i class="fas fa-external-link-alt"></i></a>
+          </div>
         </div>
-        <p class="copyright">&copy; 2023 Uzair Moazzam. All rights reserved.</p>
-    </footer>
+        <h3>SignVerse</h3>
+        <p class="pc-sub mono">Bidirectional ASL Translation Platform</p>
+        <p class="pc-desc">Production-deployed ASL platform with real-time sign-to-text recognition (Conv1D + TransformerEncoder over 225-D MediaPipe landmarks), text-to-sign 2D avatar animation, and a 3-tier interactive learning curriculum. Live on Vercel + Hugging Face Spaces.</p>
+        <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">FastAPI</span><span class="tag">React 18</span><span class="tag">Firebase</span><span class="tag">MediaPipe</span><span class="tag">TypeScript</span></div>
+        <button class="pc-detail mag">Details <i class="fas fa-arrow-right"></i></button>
+      </div>
 
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', function () {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+      <!-- ─── FEATURED: Tea Leaf ─── -->
+      <div class="proj-card glass featured reveal" data-cat="ai cv" data-modal="m-tealeaf">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge feat">★ Featured</span><span class="pbadge ai">Computer Vision</span></div>
+          <div class="pc-links">
+            <a href="https://github.com/Uzairrr21/Automated-Detection-of-Tea-Leaf-Diseases-Using-Deep-Learning-A-Study-on-the-TeaLeafNet-Dataset" target="_blank" class="ico-link mag" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <h3>Tea Leaf Disease Detection</h3>
+        <p class="pc-sub mono">Swin Transformer · Grad-CAM · 97.87% Accuracy</p>
+        <p class="pc-desc">Fine-tuned Swin-T on TeaLeafNet (5,000 images, 4 classes) with 2-phase transfer learning. Reached 97.87% test accuracy with TTA×7 at 97 FPS on Tesla P100. Grad-CAM with morphological isolation confirms disease localisation per class.</p>
+        <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">Swin Transformer</span><span class="tag">Grad-CAM</span><span class="tag">TTA</span><span class="tag">MixUp</span></div>
+        <button class="pc-detail mag">Details <i class="fas fa-arrow-right"></i></button>
+      </div>
 
-        // Mobile menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('nav');
+      <!-- ─── E-commerce Store ─── -->
+      <div class="proj-card glass reveal" data-cat="fullstack" data-modal="m-ecom">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge fs">Full-Stack</span></div>
+          <div class="pc-links">
+            <a href="https://github.com/Uzairrr21/E-commerce-Store" target="_blank" class="ico-link mag" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <h3>E-Commerce Store</h3>
+        <p class="pc-sub mono">MERN · Admin Panel · JWT Auth</p>
+        <p class="pc-desc">Full-stack e-commerce platform with product catalog, shopping cart, secure checkout, admin CRUD panel, role-based access control, order history, and a responsive animated React UI backed by a Node/Express REST API and MongoDB.</p>
+        <div class="tag-row"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">JWT</span><span class="tag">Express</span></div>
+        <button class="pc-detail mag">Details <i class="fas fa-arrow-right"></i></button>
+      </div>
 
-        menuToggle.addEventListener('click', function () {
-            nav.classList.toggle('active');
-        });
+      <!-- ─── Urdu Fake News ─── -->
+      <div class="proj-card glass reveal" data-cat="ai nlp" data-modal="m-fakenews">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">NLP</span><span class="pbadge res">Research</span></div>
+          <div class="pc-links">
+            <a href="https://github.com/Uzairrr21" target="_blank" class="ico-link mag" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <h3>Urdu Fake News Detection</h3>
+        <p class="pc-sub mono">DistilBERT · Stacking Ensemble · 83.33%</p>
+        <p class="pc-desc">Co-authored NLP research system: 3-tier framework from Naive Bayes baseline to weighted stacking ensemble using DistilBERT-multilingual + TF-IDF features. 83.33% accuracy, macro F1 0.8185 on 5,000 verified Urdu articles. Under review.</p>
+        <div class="tag-row"><span class="tag">DistilBERT</span><span class="tag">TF-IDF</span><span class="tag">SMOTE</span><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span></div>
+        <button class="pc-detail mag">Details <i class="fas fa-arrow-right"></i></button>
+      </div>
 
-        // Close mobile menu when clicking a nav link
-        const navLinks = document.querySelectorAll('nav ul li a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                nav.classList.remove('active');
-            });
-        });
+      <!-- ─── SwiftQuery ─── -->
+      <div class="proj-card glass reveal" data-cat="ai nlp" data-modal="m-swiftquery">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">Agentic AI</span></div>
+        </div>
+        <h3>SwiftQuery</h3>
+        <p class="pc-sub mono">Agentic RAG · LangGraph · FAISS</p>
+        <p class="pc-desc">Agentic Retrieval-Augmented Generation chatbot built with LangChain and LangGraph for multi-step agentic reasoning. FAISS-powered semantic document retrieval delivers grounded, factual answers. Automated with n8n workflow pipelines.</p>
+        <div class="tag-row"><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">RAG</span><span class="tag">FAISS</span><span class="tag">n8n</span></div>
+        <button class="pc-detail mag">Details <i class="fas fa-arrow-right"></i></button>
+      </div>
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+      <!-- ─── Real-Time Chat App ─── -->
+      <div class="proj-card glass reveal" data-cat="fullstack">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge fs">Full-Stack</span></div>
+        </div>
+        <h3>Real-Time Chat App</h3>
+        <p class="pc-sub mono">WebSockets · Node.js · React</p>
+        <p class="pc-desc">Bidirectional real-time messaging application built with WebSockets and Socket.io. Features instant message delivery, online presence indicators, message history persisted in MongoDB, and JWT-secured user sessions.</p>
+        <div class="tag-row"><span class="tag">WebSockets</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">JWT</span></div>
+      </div>
 
-        // Animate skill bars on scroll
-        const skillBars = document.querySelectorAll('.skill-progress');
-        window.addEventListener('scroll', checkSkills);
+      <!-- ─── Event Management ─── -->
+      <div class="proj-card glass reveal" data-cat="fullstack">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge fs">Full-Stack</span></div>
+        </div>
+        <h3>Event Management System</h3>
+        <p class="pc-sub mono">MERN · RBAC · REST API</p>
+        <p class="pc-desc">Full-stack event management platform with role-based access control distinguishing admin, organiser, and attendee roles. Includes event creation, registration flow, capacity management, and a dashboard built on the MERN stack.</p>
+        <div class="tag-row"><span class="tag">React</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">RBAC</span><span class="tag">JWT</span></div>
+      </div>
 
-        function checkSkills() {
-            const triggerBottom = window.innerHeight * 0.8;
+      <!-- ─── Road Link ─── -->
+      <div class="proj-card glass reveal" data-cat="fullstack">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge fs">Full-Stack</span></div>
+        </div>
+        <h3>Road Link</h3>
+        <p class="pc-sub mono">Geolocation · Google Maps API</p>
+        <p class="pc-desc">Geolocation and routing web application integrating the Google Maps API. Delivered across 2 client deployments during the Techtomyy internship. Features turn-by-turn routing, live location tracking, and a React-based map UI.</p>
+        <div class="tag-row"><span class="tag">Google Maps API</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Geolocation</span></div>
+      </div>
 
-            skillBars.forEach(bar => {
-                const barTop = bar.getBoundingClientRect().top;
+      <!-- ─── Charity Platform ─── -->
+      <div class="proj-card glass reveal" data-cat="fullstack">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge fs">Full-Stack</span></div>
+        </div>
+        <h3>Online Charity Platform</h3>
+        <p class="pc-sub mono">MERN · Donation Flows · JWT</p>
+        <p class="pc-desc">Full-stack charity donation platform with secure donation flows, JWT authentication, campaign creation and tracking, user registration, feedback forms, and persistent MongoDB storage — shipped during the Techtomyy internship.</p>
+        <div class="tag-row"><span class="tag">MongoDB</span><span class="tag">Express</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">JWT</span></div>
+      </div>
 
-                if (barTop < triggerBottom) {
-                    bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
-                }
-            });
-        }
+      <!-- ─── DistilBERT Sentiment Pipeline ─── -->
+      <div class="proj-card glass reveal" data-cat="ai nlp">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">NLP</span></div>
+        </div>
+        <h3>Multi-Lingual Sentiment Pipeline</h3>
+        <p class="pc-sub mono">DistilBERT · Hugging Face · PyTorch</p>
+        <p class="pc-desc">Sentiment classification pipeline built with DistilBERT-multilingual via Hugging Face Transformers. Includes data preprocessing, tokenisation, fine-tuning, and evaluation — built as part of the Binary Brains internship deliverables.</p>
+        <div class="tag-row"><span class="tag">DistilBERT</span><span class="tag">Transformers</span><span class="tag">PyTorch</span><span class="tag">W&B</span></div>
+      </div>
 
-        // Initialize skills animation
-        checkSkills();
-    </script>
+      <!-- ─── Image Classification W&B ─── -->
+      <div class="proj-card glass reveal" data-cat="ai cv">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">Computer Vision</span></div>
+        </div>
+        <h3>CNN Image Classifier + W&B Tracking</h3>
+        <p class="pc-sub mono">PyTorch · W&B · Experiment Tracking</p>
+        <p class="pc-desc">CNN image classification system with comprehensive experiment tracking via Weights & Biases. Tracked 50+ runs across hyperparameter sweeps, learning rate schedules, and augmentation strategies — built during the Binary Brains internship.</p>
+        <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">CNN</span><span class="tag">W&B</span><span class="tag">OpenCV</span></div>
+      </div>
+
+      <!-- ─── BERT Fine-Tune ─── -->
+      <div class="proj-card glass reveal" data-cat="ai nlp">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">NLP</span></div>
+        </div>
+        <h3>BERT Fine-Tuning Pipeline</h3>
+        <p class="pc-sub mono">PEFT / SFT · LoRA · HuggingFace</p>
+        <p class="pc-desc">Parameter-efficient fine-tuning pipeline using PEFT/LoRA on BERT-based models for text classification tasks. Includes dataset preparation, tokenisation, training loops with gradient accumulation, and evaluation metrics logging.</p>
+        <div class="tag-row"><span class="tag">BERT</span><span class="tag">PEFT</span><span class="tag">LoRA</span><span class="tag">HuggingFace</span><span class="tag">PyTorch</span></div>
+      </div>
+
+      <!-- ─── ASL Alphabet CNN ─── -->
+      <div class="proj-card glass reveal" data-cat="ai cv">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">Computer Vision</span></div>
+        </div>
+        <h3>ASL Alphabet CNN Classifier</h3>
+        <p class="pc-sub mono">PyTorch · CNN · A–Z Fingerspelling</p>
+        <p class="pc-desc">CNN model trained on the ASL Alphabet Kaggle dataset for A–Z fingerspelling classification. Deployed as the easy-level backend in SignVerse's learning module, serving single-frame JPEG predictions via the FastAPI /api/learning/predict endpoint.</p>
+        <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">CNN</span><span class="tag">FastAPI</span><span class="tag">Kaggle</span></div>
+      </div>
+
+      <!-- ─── RAG Document Q&A ─── -->
+      <div class="proj-card glass reveal" data-cat="ai nlp">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">RAG / LLM</span></div>
+        </div>
+        <h3>Document Q&A with RAG</h3>
+        <p class="pc-sub mono">LangChain · FAISS · Prompt Engineering</p>
+        <p class="pc-desc">Retrieval-Augmented Generation pipeline for document question answering. Chunks and embeds documents into a FAISS vector store, retrieves semantically similar passages, and passes them to an LLM with engineered prompts for accurate, grounded answers.</p>
+        <div class="tag-row"><span class="tag">LangChain</span><span class="tag">FAISS</span><span class="tag">Embeddings</span><span class="tag">Prompt Eng.</span></div>
+      </div>
+
+      <!-- ─── MediaPipe Pose ─── -->
+      <div class="proj-card glass reveal" data-cat="ai cv">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">Computer Vision</span></div>
+        </div>
+        <h3>MediaPipe Pose Landmark Extractor</h3>
+        <p class="pc-sub mono">MediaPipe Holistic · OpenCV · 225-D Features</p>
+        <p class="pc-desc">Real-time 225-dimensional landmark extraction pipeline using MediaPipe Holistic (33 pose + 21+21 hand keypoints). Includes temporal resampling to fixed 64-frame windows and wrist-relative normalisation — core preprocessing for SignVerse.</p>
+        <div class="tag-row"><span class="tag">MediaPipe</span><span class="tag">OpenCV</span><span class="tag">NumPy</span><span class="tag">FastAPI</span></div>
+      </div>
+
+      <!-- ─── Transformer Sign Classifier ─── -->
+      <div class="proj-card glass reveal" data-cat="ai cv nlp">
+        <div class="pc-glow"></div>
+        <div class="pc-top">
+          <div class="pc-badges"><span class="pbadge ai">AI/ML</span></div>
+        </div>
+        <h3>Conv1D + Transformer Sign Classifier</h3>
+        <p class="pc-sub mono">PyTorch · 250-Class ASL · Viterbi Decoder</p>
+        <p class="pc-desc">Temporal sign language classifier: Conv1D stem extracts local motion patterns → 4-layer TransformerEncoder with CLS token predicts 1 of 250 ASL signs. Sentence mode uses wrist-velocity boundary detection + Viterbi + Bigram LM for continuous recognition.</p>
+        <div class="tag-row"><span class="tag">PyTorch</span><span class="tag">Conv1D</span><span class="tag">Transformer</span><span class="tag">Viterbi</span></div>
+      </div>
+
+    </div><!-- /proj-grid -->
+
+    <!-- Research publications callout -->
+    <div class="research-callout glass reveal">
+      <div class="rc-icon"><i class="fas fa-file-alt"></i></div>
+      <div class="rc-body">
+        <h3>2 Research Papers Under Review</h3>
+        <p>Co-authored with faculty from Lahore Garrison University and <strong>Southern Methodist University, Dallas, TX</strong>:</p>
+        <ul class="rc-list">
+          <li><strong>Fake News Detection in Low-Resource Urdu via Hybrid Deep Learning</strong> — 83.33% accuracy, macro F1 0.8185 on 5,000 Urdu articles (2025)</li>
+          <li><strong>Automated Tea Leaf Disease Detection Using Swin Transformer on TeaLeafNet</strong> — 97.87% test accuracy at 97 FPS, reproducible benchmark (2026)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════ CONTACT ════════════════════════ -->
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Let's talk</span>
+      <h2>Contact Me</h2>
+    </div>
+    <div class="contact-grid">
+
+      <div class="contact-left reveal-l">
+        <p class="contact-intro">I'm actively looking for junior AI/ML Engineering roles in Lahore. If you're hiring, collaborating on research, or just want to connect — reach out directly.</p>
+        <div class="cinfo-cards">
+          <a href="mailto:umoazzam58@gmail.com" class="cinfo glass mag">
+            <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+            <div><span class="ci-label">Email</span><span class="ci-val">umoazzam58@gmail.com</span></div>
+          </a>
+          <a href="tel:+923019465045" class="cinfo glass mag">
+            <div class="ci-icon"><i class="fas fa-phone"></i></div>
+            <div><span class="ci-label">Phone</span><span class="ci-val">+92 301 946 5045</span></div>
+          </a>
+          <div class="cinfo glass">
+            <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><span class="ci-label">Location</span><span class="ci-val">Lahore, Pakistan</span></div>
+          </div>
+          <a href="https://www.linkedin.com/in/uzair-moazzam" target="_blank" class="cinfo glass mag">
+            <div class="ci-icon"><i class="fab fa-linkedin-in"></i></div>
+            <div><span class="ci-label">LinkedIn</span><span class="ci-val">www.linkedin.com/in/uzair-moazzam</span></div>
+          </a>
+          <a href="https://github.com/Uzairrr21" target="_blank" class="cinfo glass mag">
+            <div class="ci-icon"><i class="fab fa-github"></i></div>
+            <div><span class="ci-label">GitHub</span><span class="ci-val">Uzairrr21</span></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-right reveal-r">
+        <div class="contact-form glass">
+          <h3>Send a Message</h3>
+          <p class="form-note">This form sends your message directly to <strong>umoazzam58@gmail.com</strong>.</p>
+          <form id="contactForm" action="https://formsubmit.co/umoazzam58@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="New message from your portfolio"/>
+            <input type="hidden" name="_captcha" value="false"/>
+            <input type="hidden" name="_template" value="table"/>
+            <div class="fg">
+              <label for="fname">Your Name <span class="req">*</span></label>
+              <input type="text" id="fname" name="name" placeholder="e.g. Ahmed Khan" autocomplete="name" required/>
+            </div>
+            <div class="fg">
+              <label for="femail">Your Email <span class="req">*</span></label>
+              <input type="email" id="femail" name="email" placeholder="ahmed@company.com" autocomplete="email" required/>
+            </div>
+            <div class="fg">
+              <label for="fsubject">Subject <span class="req">*</span></label>
+              <input type="text" id="fsubject" name="subject" placeholder="Junior AI/ML Engineer — Job Opportunity" required/>
+            </div>
+            <div class="fg">
+              <label for="fmsg">Message <span class="req">*</span></label>
+              <textarea id="fmsg" name="message" rows="5" placeholder="Hi Uzair, I came across your portfolio and wanted to reach out about..." required></textarea>
+            </div>
+            <button class="btn-primary full mag" id="sendBtn" type="submit">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+          <p id="form-status" class="form-status" role="alert" aria-live="polite"></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ══════════════════════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <a href="#home" class="brand"><span class="brand-lt">&lt;</span>Uzair<span class="brand-dot">/</span><span class="brand-rt">&gt;</span></a>
+      <p class="footer-copy mono">© 2026 Uzair Moazzam · Built with purpose, not templates.</p>
+      <div class="footer-socials">
+        <a href="https://github.com/Uzairrr21" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/uzair-moazzam" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="mailto:umoazzam58@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════ PROJECT MODALS ═══════════════════════ -->
+
+<!-- SignVerse Modal -->
+<div id="m-signverse" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box glass">
+    <button class="modal-x" data-close aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-badges"><span class="pbadge feat">★ Featured</span><span class="pbadge ai">AI/ML</span><span class="pbadge fs">Full-Stack</span></div>
+      <div class="modal-links">
+        <a href="https://github.com/Uzairrr21/SignVerse" target="_blank" class="btn-ghost mag"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://sign-verse-self.vercel.app/" target="_blank" class="btn-primary mag"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+      </div>
+    </div>
+    <h2>SignVerse — Bidirectional ASL Platform</h2>
+    <p class="modal-sub mono">Sep 2025 – May 2026 · Final Year Project · LGU</p>
+    <div class="modal-body">
+      <h4>What it does</h4>
+      <p>A browser-based ASL platform combining three modules: real-time sign-to-text recognition from webcam, text-to-sign 2D avatar animation, and an interactive 3-tier learning curriculum (easy → medium → hard). Fully deployed on Vercel + Hugging Face Spaces (Docker).</p>
+      <h4>Architecture</h4>
+      <ul>
+        <li><strong>Frontend:</strong> React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui. Firebase Auth + Firestore for user progress persistence.</li>
+        <li><strong>Backend:</strong> FastAPI + PyTorch on Hugging Face Spaces (CPU Docker container).</li>
+        <li><strong>Sign-to-Text:</strong> Browser captures 10fps frames → MediaPipe Holistic extracts 225-D landmarks (33 pose + 21+21 hand) → wrist-relative normalisation → 64-frame temporal resampling → Conv1D stem + 4-layer TransformerEncoder (d=256, 4 heads) → top-3 prediction from 250-class ASL vocabulary.</li>
+        <li><strong>Text-to-Sign:</strong> Rule-based ASL gloss conversion → keyframe lookup from How2Sign + Google ASL database → 7 quadratic eased transition frames → Gaussian smoothing → 60fps 2D canvas avatar rendering.</li>
+        <li><strong>Learning Module:</strong> Easy (A–Z CNN), Medium (full pipeline), Hard (Viterbi + Bigram LM for sentence recognition).</li>
+        <li><strong>Extras:</strong> Google Translate multilingual output (6 languages), Google TTS audio playback.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">PyTorch</span><span class="tag">FastAPI</span><span class="tag">React 18</span><span class="tag">TypeScript</span>
+        <span class="tag">Firebase</span><span class="tag">MediaPipe</span><span class="tag">Conv1D</span><span class="tag">TransformerEncoder</span>
+        <span class="tag">Vercel</span><span class="tag">HF Spaces</span><span class="tag">Docker</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tea Leaf Modal -->
+<div id="m-tealeaf" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box glass">
+    <button class="modal-x" data-close aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-badges"><span class="pbadge feat">★ Featured</span><span class="pbadge ai">Computer Vision</span><span class="pbadge res">Under Review</span></div>
+      <div class="modal-links">
+        <a href="https://github.com/Uzairrr21/Automated-Detection-of-Tea-Leaf-Diseases-Using-Deep-Learning-A-Study-on-the-TeaLeafNet-Dataset" target="_blank" class="btn-ghost mag"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <h2>Tea Leaf Disease Detection via Swin Transformer</h2>
+    <p class="modal-sub mono">2026 · Research Project · Paper Under Review</p>
+    <div class="modal-body">
+      <h4>Results at a Glance</h4>
+      <div class="modal-metrics">
+        <div class="metric-card"><span class="mn">97.87%</span><span class="ml">Test Accuracy</span></div>
+        <div class="metric-card"><span class="mn">98.93%</span><span class="ml">Val Accuracy</span></div>
+        <div class="metric-card"><span class="mn">97 FPS</span><span class="ml">Tesla P100</span></div>
+        <div class="metric-card"><span class="mn">TTA×7</span><span class="ml">Augmentation</span></div>
+      </div>
+      <h4>Methodology</h4>
+      <ul>
+        <li><strong>Dataset:</strong> TeaLeafNet — 5,000 images, 4 disease classes.</li>
+        <li><strong>Phase 1:</strong> Frozen Swin-T backbone, only classification head trained.</li>
+        <li><strong>Phase 2:</strong> Stage-4 fine-tuning with MixUp regularisation (α=0.2), enabling deep feature adaptation.</li>
+        <li><strong>Explainability:</strong> Grad-CAM with morphological isolation confirms disease-specific tissue localisation across all 4 classes — validated for clinical/agricultural use.</li>
+        <li><strong>Inference:</strong> Test-Time Augmentation ×7 boosts accuracy to 97.87%. 97 FPS on Tesla P100 — viable for real-time field deployment.</li>
+        <li><strong>Contribution:</strong> Establishes reproducible TeaLeafNet benchmark with full hyperparameter disclosure.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">PyTorch</span><span class="tag">Swin Transformer</span><span class="tag">Grad-CAM</span>
+        <span class="tag">Transfer Learning</span><span class="tag">MixUp</span><span class="tag">TTA</span><span class="tag">Kaggle</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- E-Commerce Modal -->
+<div id="m-ecom" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box glass">
+    <button class="modal-x" data-close aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-badges"><span class="pbadge fs">Full-Stack</span></div>
+      <div class="modal-links">
+        <a href="https://github.com/Uzairrr21/E-commerce-Store" target="_blank" class="btn-ghost mag"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <h2>E-Commerce Store</h2>
+    <p class="modal-sub mono">MERN Stack · Admin Panel · Role-Based Auth</p>
+    <div class="modal-body">
+      <h4>Features</h4>
+      <ul>
+        <li>Product catalog with search, filtering, and category browsing.</li>
+        <li>Shopping cart with persistent state and checkout flow.</li>
+        <li>JWT-secured user authentication with bcrypt password hashing.</li>
+        <li>Admin panel with full CRUD for product management.</li>
+        <li>Order history and order management per user.</li>
+        <li>Role-based access control separating admin and customer permissions.</li>
+        <li>RESTful API (products, users, orders) with error handling middleware.</li>
+        <li>Responsive, animated React UI with Context API state management.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Express</span>
+        <span class="tag">MongoDB</span><span class="tag">JWT</span><span class="tag">bcrypt</span><span class="tag">Context API</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fake News Modal -->
+<div id="m-fakenews" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box glass">
+    <button class="modal-x" data-close aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-badges"><span class="pbadge ai">NLP Research</span><span class="pbadge res">Under Review</span></div>
+      <div class="modal-links">
+        <a href="https://github.com/Uzairrr21" target="_blank" class="btn-ghost mag"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <h2>Urdu Fake News Detection — Hybrid Deep Learning</h2>
+    <p class="modal-sub mono">2025 · Co-authored: LGU & SMU Dallas, TX · Under Review</p>
+    <div class="modal-body">
+      <h4>Results</h4>
+      <div class="modal-metrics">
+        <div class="metric-card"><span class="mn">83.33%</span><span class="ml">Accuracy</span></div>
+        <div class="metric-card"><span class="mn">0.8185</span><span class="ml">Macro F1</span></div>
+        <div class="metric-card"><span class="mn">+65pp</span><span class="ml">Minority Recall</span></div>
+        <div class="metric-card"><span class="mn">5,000</span><span class="ml">Urdu Articles</span></div>
+      </div>
+      <h4>Methodology</h4>
+      <ul>
+        <li><strong>Tier 1 (Baseline):</strong> TF-IDF + Naive Bayes — establishes classical NLP baseline.</li>
+        <li><strong>Tier 2 (Deep):</strong> DistilBERT-multilingual embeddings + classical classifiers (SVM, XGBoost).</li>
+        <li><strong>Tier 3 (Ensemble):</strong> Weighted stacking ensemble achieving 83.33% accuracy and macro F1 0.8185, outperforming baseline by 13.33 pp.</li>
+        <li><strong>Class Imbalance:</strong> SMOTE oversampling raised minority-class recall by 65 percentage points.</li>
+        <li><strong>Dataset:</strong> 5,000 verified Urdu articles — low-resource language; first benchmark of this kind.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">DistilBERT</span><span class="tag">TF-IDF</span><span class="tag">SMOTE</span>
+        <span class="tag">XGBoost</span><span class="tag">Stacking Ensemble</span><span class="tag">Scikit-learn</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SwiftQuery Modal -->
+<div id="m-swiftquery" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box glass">
+    <button class="modal-x" data-close aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-badges"><span class="pbadge ai">Agentic AI</span></div>
+    </div>
+    <h2>SwiftQuery — Agentic RAG Chatbot</h2>
+    <div class="modal-body">
+      <h4>What it does</h4>
+      <p>Agentic Retrieval-Augmented Generation chatbot that performs multi-step reasoning over documents. Uses LangGraph state machines to plan and execute retrieval + synthesis steps, then delivers grounded factual answers — avoiding LLM hallucination.</p>
+      <h4>Key Features</h4>
+      <ul>
+        <li>LangGraph-powered agentic orchestration — multi-step planning, not single-shot retrieval.</li>
+        <li>FAISS vector store for dense semantic document search.</li>
+        <li>n8n workflow automation for document ingestion, indexing, and notification pipelines.</li>
+        <li>Prompt engineering for context-window management and citation-grounded responses.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">RAG</span>
+        <span class="tag">FAISS</span><span class="tag">n8n</span><span class="tag">Prompt Engineering</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/main.js"></script>
 </body>
-
 </html>
