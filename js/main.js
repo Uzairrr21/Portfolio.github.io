@@ -461,8 +461,8 @@ function sendMsg(){
     const slug = (item.img || item.label).toString().toLowerCase().replace(/[^a-z0-9]/g,'');
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.src = `assets/icons/${slug}.png`;
-    // if image exists, draw clipped circular image, else draw text fallback
+    // try svg first (we added SVG placeholders), then fallback to png, then text
+    img.src = `assets/icons/${slug}.svg`;
     img.onload = ()=>{
       drawBase();
       const s = size*0.62;
@@ -476,7 +476,13 @@ function sendMsg(){
       tex.needsUpdate = true;
     };
     img.onerror = ()=>{
-      // text fallback
+      // try png fallback (some icons might be png)
+      if(!img.__triedPng){
+        img.__triedPng = true;
+        img.src = `assets/icons/${slug}.png`;
+        return;
+      }
+      // final fallback: draw short text
       const fontSize = item.short.length > 2 ? 38 : 50;
       ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
       ctx.fillStyle = item.color;
