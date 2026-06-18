@@ -609,6 +609,35 @@ function sendMsg(){
 })();
 
 /* ---------- 13. PROFILE TILT (hero) ---------- */
+(function contactCopy(){
+  // Delegated handler for copy buttons in contact cards
+  document.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('.ci-copy');
+    if(!btn) return;
+    e.preventDefault();
+    const value = btn.getAttribute('data-copy');
+    if(!value) return;
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(value);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = value; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      }
+      // feedback
+      btn.classList.add('copied');
+      const icon = btn.querySelector('i');
+      const old = icon ? icon.className : '';
+      if(icon) icon.className = 'fas fa-check';
+      setTimeout(()=>{
+        btn.classList.remove('copied');
+        if(icon) icon.className = old;
+      }, 1400);
+    }catch(err){
+      console.error('Copy failed', err);
+    }
+  });
+})();
 (function profileTilt(){
   const frame = document.getElementById('profileFrame');
   if(!frame) return;
