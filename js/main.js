@@ -412,24 +412,24 @@ function sendMsg(){
   // Text-label badges — no external glyph-font dependency, so rendering
   // never silently breaks on a wrong/unsupported icon codepoint.
   const ICONS = [
-    {label:'Python',     short:'Py',   color:'#3776ab'},
-    {label:'PyTorch',    short:'PT',   color:'#ee4c2c'},
-    {label:'TensorFlow', short:'TF',   color:'#ff8f00'},
-    {label:'React',      short:'⚛',    color:'#61dafb'},
-    {label:'Node.js',    short:'JS',   color:'#5fa04e'},
-    {label:'TypeScript', short:'TS',   color:'#3178c6'},
-    {label:'Docker',     short:'Dk',   color:'#2496ed'},
-    {label:'GitHub',     short:'Git',  color:'#e6edf3'},
-    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d'},
-    {label:'MongoDB',    short:'Mg',   color:'#47a248'},
-    {label:'OpenCV',     short:'CV',   color:'#5c3ee8'},
-    {label:'C++',        short:'C++',  color:'#00599c'},
-    {label:'FastAPI',    short:'API',  color:'#06b6d4'},
-    {label:'Deep Learning', short:'AI',color:'#a855f7'},
-    {label:'Vercel',     short:'▲',    color:'#a1a1aa'},
-    {label:'LangChain',  short:'LC',   color:'#22d3ee'},
-    {label:'Linux',      short:'Lx',   color:'#fcc624'},
-    {label:'NumPy',      short:'Np',   color:'#4d77cf'},
+    {label:'Python',     short:'Py',   color:'#3776ab', img:'python'},
+    {label:'PyTorch',    short:'PT',   color:'#ee4c2c', img:'pytorch'},
+    {label:'TensorFlow', short:'TF',   color:'#ff8f00', img:'tensorflow'},
+    {label:'React',      short:'⚛',    color:'#61dafb', img:'react'},
+    {label:'Node.js',    short:'JS',   color:'#5fa04e', img:'nodejs'},
+    {label:'TypeScript', short:'TS',   color:'#3178c6', img:'typescript'},
+    {label:'Docker',     short:'Dk',   color:'#2496ed', img:'docker'},
+    {label:'GitHub',     short:'Git',  color:'#e6edf3', img:'github'},
+    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d', img:'huggingface'},
+    {label:'MongoDB',    short:'Mg',   color:'#47a248', img:'mongodb'},
+    {label:'OpenCV',     short:'CV',   color:'#5c3ee8', img:'opencv'},
+    {label:'C++',        short:'C++',  color:'#00599c', img:'cpp'},
+    {label:'FastAPI',    short:'API',  color:'#06b6d4', img:'fastapi'},
+    {label:'Deep Learning', short:'AI',color:'#a855f7', img:'ai'},
+    {label:'Vercel',     short:'▲',    color:'#a1a1aa', img:'vercel'},
+    {label:'LangChain',  short:'LC',   color:'#22d3ee', img:'langchain'},
+    {label:'Linux',      short:'Lx',   color:'#fcc624', img:'linux'},
+    {label:'NumPy',      short:'Np',   color:'#4d77cf', img:'numpy'},
   ];
 
   function makeIconSprite(item){
@@ -438,36 +438,61 @@ function sendMsg(){
     cv.width = size; cv.height = size;
     const ctx = cv.getContext('2d');
 
-    // node circle background
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(13,18,32,0.94)';
-    ctx.fill();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.stroke();
+    function drawBase(){
+      ctx.clearRect(0,0,size,size);
+      // outer circle
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(13,18,32,0.94)';
+      ctx.fill();
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.stroke();
+      // inner ring accent
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = item.color + '88';
+      ctx.stroke();
+    }
 
-    // colored inner ring accent
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = item.color + '88';
-    ctx.stroke();
+    drawBase();
 
-    const fontSize = item.short.length > 2 ? 38 : 50;
-    ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
-    ctx.fillStyle = item.color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.shadowColor = item.color;
-    ctx.shadowBlur = 22;
-    ctx.fillText(item.short, size/2, size/2+2);
+    const slug = (item.img || item.label).toString().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = `assets/icons/${slug}.png`;
+    // if image exists, draw clipped circular image, else draw text fallback
+    img.onload = ()=>{
+      drawBase();
+      const s = size*0.62;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, s/2, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(img, size/2 - s/2, size/2 - s/2, s, s);
+      ctx.restore();
+      tex.needsUpdate = true;
+    };
+    img.onerror = ()=>{
+      // text fallback
+      const fontSize = item.short.length > 2 ? 38 : 50;
+      ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
+      ctx.fillStyle = item.color;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = item.color;
+      ctx.shadowBlur = 22;
+      ctx.fillText(item.short, size/2, size/2+2);
+      tex.needsUpdate = true;
+    };
 
     const tex = new THREE.CanvasTexture(cv);
     tex.minFilter = THREE.LinearFilter;
     const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, depthWrite:false });
     const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(0.5,0.5,0.5);
+    sprite.scale.set(0.48,0.48,0.48);
     sprite.userData.label = item.label;
     return sprite;
   }
@@ -500,19 +525,46 @@ function sendMsg(){
   const rimMat = new THREE.MeshBasicMaterial({ color:0x06b6d4, transparent:true, opacity:0.06, side:THREE.BackSide });
   globeRoot.add(new THREE.Mesh(rimGeo, rimMat));
 
-  // Distribute icons on sphere using Fibonacci lattice
+  // Distribute icons on sphere using Fibonacci lattice and apply simple relaxation
   const n = ICONS.length;
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-  ICONS.forEach((item, i)=>{
+  const positions = [];
+  for(let i=0;i<n;i++){
     const yFrac = 1 - (i/(n-1))*2;          // 1 → -1
     const radiusAtY = Math.sqrt(1 - yFrac*yFrac);
     const theta = goldenAngle * i;
     const x = Math.cos(theta)*radiusAtY;
     const z = Math.sin(theta)*radiusAtY;
-    const pos = new THREE.Vector3(x, yFrac, z).multiplyScalar(RADIUS);
+    positions.push(new THREE.Vector3(x,yFrac,z).multiplyScalar(RADIUS));
+  }
 
+  // basic pairwise repulsion on the sphere surface to reduce overlap
+  const minSep = 0.9; // minimum separation (approx)
+  for(let iter=0; iter<32; iter++){
+    let moved = false;
+    for(let a=0;a<n;a++){
+      for(let b=a+1;b<n;b++){
+        const pa = positions[a];
+        const pb = positions[b];
+        const d = pa.distanceTo(pb);
+        if(d < minSep){
+          const overlap = (minSep - d) * 0.5;
+          const dir = pa.clone().sub(pb).normalize();
+          pa.add(dir.clone().multiplyScalar(overlap));
+          pb.add(dir.clone().multiplyScalar(-overlap));
+          moved = true;
+        }
+      }
+    }
+    // reproject to sphere radius
+    for(let k=0;k<n;k++) positions[k].setLength(RADIUS);
+    if(!moved) break;
+  }
+
+  // create sprites at relaxed positions
+  ICONS.forEach((item,i)=>{
     const sprite = makeIconSprite(item);
-    sprite.position.copy(pos);
+    sprite.position.copy(positions[i]);
     globeRoot.add(sprite);
   });
 
