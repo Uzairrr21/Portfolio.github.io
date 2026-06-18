@@ -138,83 +138,98 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ SKILLS ═══════════════════════════ -->
-<section id="skills" class="section section-dark">
+<!-- ═══════════════════════════ SKILLS (3D Globe) ═══════════════════════════ -->
+<!-- Replaced with globe-based skills layout from skills-globe.txt -->
+<section id="skills" class="section section-dark skills-sec">
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="sec-tag">Tech Stack</span>
       <h2>Skills</h2>
+      <p class="sec-desc">A rotating snapshot of the languages, frameworks, and tools I reach for daily — drag to spin, hover to inspect.</p>
     </div>
-    <div class="skills-grid">
 
-      <div class="skill-col glass reveal">
-        <div class="sk-head"><div class="sk-ico"><i class="fas fa-brain"></i></div><h3>AI / ML</h3></div>
-        <div class="sk-tags">
-          <span class="stag primary">PyTorch</span>
-          <span class="stag primary">TensorFlow</span>
-          <span class="stag primary">Hugging Face Transformers</span>
-          <span class="stag primary">BERT / DistilBERT</span>
-          <span class="stag primary">Swin Transformer</span>
-          <span class="stag primary">Scikit-learn</span>
-          <span class="stag primary">XGBoost</span>
-          <span class="stag primary">SMOTE</span>
-          <span class="stag primary">Transfer Learning</span>
-          <span class="stag primary">Fine-Tuning (SFT/PEFT)</span>
-          <span class="stag primary">RAG</span>
-          <span class="stag primary">FAISS</span>
-          <span class="stag primary">LangChain</span>
-          <span class="stag primary">LangGraph</span>
-          <span class="stag primary">Grad-CAM</span>
-          <span class="stag primary">OpenCV</span>
-          <span class="stag primary">MediaPipe</span>
-          <span class="stag primary">Prompt Engineering</span>
-        </div>
+    <div class="skills-layout">
+
+      <!-- 3D Globe -->
+      <div class="globe-stage reveal-l">
+        <div class="globe-glow-bg"></div>
+        <canvas id="skillGlobe"></canvas>
+        <div class="globe-hint mono"><i class="fas fa-arrows-rotate"></i> drag to rotate</div>
       </div>
 
-      <div class="skill-col glass reveal">
-        <div class="sk-head"><div class="sk-ico cyan"><i class="fas fa-code"></i></div><h3>Languages</h3></div>
-        <div class="sk-tags">
-          <span class="stag cyan">Python</span>
-          <span class="stag cyan">JavaScript</span>
-          <span class="stag cyan">TypeScript</span>
-          <span class="stag cyan">C</span>
-          <span class="stag cyan">C++</span>
-        </div>
-        <div class="sk-head mt" style="margin-top:1.5rem"><div class="sk-ico green"><i class="fas fa-layer-group"></i></div><h3>Full-Stack</h3></div>
-        <div class="sk-tags">
-          <span class="stag green">React.js</span>
-          <span class="stag green">Node.js</span>
-          <span class="stag green">Express.js</span>
-          <span class="stag green">MongoDB</span>
-          <span class="stag green">MySQL</span>
-          <span class="stag green">REST APIs</span>
-          <span class="stag green">WebSockets</span>
-          <span class="stag green">JWT Auth</span>
-          <span class="stag green">Firebase</span>
-          <span class="stag green">TailwindCSS</span>
-          <span class="stag green">shadcn/ui</span>
-          <span class="stag green">FastAPI</span>
-        </div>
-      </div>
+      <!-- Categorized tag lists -->
+      <div class="skills-lists reveal-r">
 
-      <div class="skill-col glass reveal">
-        <div class="sk-head"><div class="sk-ico amber"><i class="fas fa-tools"></i></div><h3>Tools & Platforms</h3></div>
-        <div class="sk-tags">
-          <span class="stag amber">Git / GitHub</span>
-          <span class="stag amber">Weights & Biases</span>
-          <span class="stag amber">Docker</span>
-          <span class="stag amber">Hugging Face Spaces</span>
-          <span class="stag amber">Vercel</span>
-          <span class="stag amber">Jupyter Notebook</span>
-          <span class="stag amber">Google Colab</span>
-          <span class="stag amber">Kaggle</span>
-          <span class="stag amber">VS Code</span>
-          <span class="stag amber">Overleaf</span>
-          <span class="stag amber">NumPy</span>
-          <span class="stag amber">Pandas</span>
+        <div class="sk-block">
+          <div class="sk-head"><div class="sk-ico"><i class="fas fa-code"></i></div><h3>Core Development</h3></div>
+          <div class="sk-tags">
+            <span class="stag primary">Python</span>
+            <span class="stag primary">JavaScript</span>
+            <span class="stag primary">TypeScript</span>
+            <span class="stag primary">C</span>
+            <span class="stag primary">C++</span>
+            <span class="stag primary">FastAPI</span>
+            <span class="stag primary">React.js</span>
+            <span class="stag primary">Node.js</span>
+            <span class="stag primary">Express.js</span>
+          </div>
         </div>
-      </div>
 
+        <div class="sk-block">
+          <div class="sk-head"><div class="sk-ico cyan"><i class="fas fa-brain"></i></div><h3>AI/ML & Data</h3></div>
+          <div class="sk-tags">
+            <span class="stag cyan">TensorFlow</span>
+            <span class="stag cyan">PyTorch</span>
+            <span class="stag cyan">Keras</span>
+            <span class="stag cyan">Scikit-learn</span>
+            <span class="stag cyan">OpenCV</span>
+            <span class="stag cyan">Pandas</span>
+            <span class="stag cyan">NumPy</span>
+            <span class="stag cyan">Matplotlib</span>
+            <span class="stag cyan">MediaPipe</span>
+            <span class="stag cyan">Transformer</span>
+            <span class="stag cyan">CNN</span>
+            <span class="stag cyan">Machine Learning</span>
+            <span class="stag cyan">Deep Learning</span>
+            <span class="stag cyan">Computer Vision</span>
+            <span class="stag cyan">Natural Language Processing</span>
+            <span class="stag cyan">Data Analysis</span>
+          </div>
+        </div>
+
+        <div class="sk-block">
+          <div class="sk-head"><div class="sk-ico green"><i class="fas fa-layer-group"></i></div><h3>Data & Backend</h3></div>
+          <div class="sk-tags">
+            <span class="stag green">MongoDB</span>
+            <span class="stag green">MySQL</span>
+            <span class="stag green">REST APIs</span>
+            <span class="stag green">WebSockets</span>
+            <span class="stag green">JWT Auth</span>
+            <span class="stag green">Firebase</span>
+            <span class="stag green">TailwindCSS</span>
+            <span class="stag green">shadcn/ui</span>
+            <span class="stag green">NumPy</span>
+            <span class="stag green">Pandas</span>
+          </div>
+        </div>
+
+        <div class="sk-block">
+          <div class="sk-head"><div class="sk-ico amber"><i class="fas fa-tools"></i></div><h3>Tools & Platforms</h3></div>
+          <div class="sk-tags">
+            <span class="stag amber">Git / GitHub</span>
+            <span class="stag amber">Weights & Biases</span>
+            <span class="stag amber">Docker</span>
+            <span class="stag amber">Hugging Face Spaces</span>
+            <span class="stag amber">Vercel</span>
+            <span class="stag amber">Jupyter Notebook</span>
+            <span class="stag amber">Google Colab</span>
+            <span class="stag amber">Kaggle</span>
+            <span class="stag amber">VS Code</span>
+            <span class="stag amber">Overleaf</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>

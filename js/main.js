@@ -404,6 +404,210 @@ function sendMsg(){
 }
 
 /* ---------- 13. PROFILE TILT (hero) ---------- */
+(function skillGlobe(){
+  const stage = document.querySelector('.globe-stage');
+  const canvas = document.getElementById('skillGlobe');
+  if(!stage || !canvas || typeof THREE === 'undefined') return;
+
+  const ICONS = [
+    {label:'Python',     short:'Py',   color:'#3776ab'},
+    {label:'PyTorch',    short:'PT',   color:'#ee4c2c'},
+    {label:'TensorFlow', short:'TF',   color:'#ff8f00'},
+    {label:'Keras',      short:'Ke',   color:'#d0006f'},
+    {label:'Scikit-learn', short:'Sk', color:'#f59e0b'},
+    {label:'OpenCV',     short:'CV',   color:'#5c3ee8'},
+    {label:'Pandas',     short:'Pd',   color:'#150050'},
+    {label:'NumPy',      short:'Np',   color:'#4d77cf'},
+    {label:'Matplotlib', short:'Mp',   color:'#f97316'},
+    {label:'MediaPipe',  short:'MP',   color:'#06b6d4'},
+    {label:'Transformer',short:'Tr',   color:'#7c3aed'},
+    {label:'CNN',        short:'CNN',  color:'#0ea5b3'},
+    {label:'Machine Learning', short:'ML', color:'#22c55e'},
+    {label:'Deep Learning', short:'DL', color:'#a855f7'},
+    {label:'Computer Vision', short:'CVs', color:'#06b6d4'},
+    {label:'NLP',        short:'NLP',  color:'#ef4444'},
+    {label:'Data Analysis', short:'DA', color:'#0ea5a4'},
+    {label:'React',      short:'⚛',    color:'#61dafb'},
+    {label:'Node.js',    short:'JS',   color:'#5fa04e'},
+    {label:'TypeScript', short:'TS',   color:'#3178c6'},
+    {label:'Docker',     short:'Dk',   color:'#2496ed'},
+    {label:'GitHub',     short:'Git',  color:'#e6edf3'},
+    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d'},
+    {label:'MongoDB',    short:'Mg',   color:'#47a248'},
+    {label:'C++',        short:'C++',  color:'#00599c'},
+    {label:'FastAPI',    short:'API',  color:'#06b6d4'},
+    {label:'Vercel',     short:'▲',    color:'#a1a1aa'},
+    {label:'LangChain',  short:'LC',   color:'#22d3ee'},
+    {label:'Linux',      short:'Lx',   color:'#fcc624'},
+  ];
+
+  function makeIconSprite(item){
+    const size = 160;
+    const cv = document.createElement('canvas');
+    cv.width = size; cv.height = size;
+    const ctx = cv.getContext('2d');
+
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(13,18,32,0.94)';
+    ctx.fill();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = item.color + '88';
+    ctx.stroke();
+
+    const fontSize = item.short.length > 2 ? 38 : 50;
+    ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
+    ctx.fillStyle = item.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = item.color;
+    ctx.shadowBlur = 22;
+    ctx.fillText(item.short, size/2, size/2+2);
+
+    const tex = new THREE.CanvasTexture(cv);
+    tex.minFilter = THREE.LinearFilter;
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, depthWrite:false });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(0.5,0.5,0.5);
+    sprite.userData.label = item.label;
+    return sprite;
+  }
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0,0,7.2);
+
+  const globeRoot = new THREE.Group();
+  scene.add(globeRoot);
+
+  const RADIUS = 2.5;
+
+  const wireGeo = new THREE.SphereGeometry(RADIUS, 22, 16);
+  const wireMat = new THREE.MeshBasicMaterial({ color:0x3a4a7c, wireframe:true, transparent:true, opacity:0.35 });
+  const wireSphere = new THREE.Mesh(wireGeo, wireMat);
+  globeRoot.add(wireSphere);
+
+  const innerGeo = new THREE.SphereGeometry(RADIUS*0.97, 24, 24);
+  const innerMat = new THREE.MeshBasicMaterial({ color:0x7c3aed, transparent:true, opacity:0.05 });
+  globeRoot.add(new THREE.Mesh(innerGeo, innerMat));
+
+  const rimGeo = new THREE.SphereGeometry(RADIUS*1.015, 24, 24);
+  const rimMat = new THREE.MeshBasicMaterial({ color:0x06b6d4, transparent:true, opacity:0.06, side:THREE.BackSide });
+  globeRoot.add(new THREE.Mesh(rimGeo, rimMat));
+
+  const n = ICONS.length;
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  ICONS.forEach((item, i)=>{
+    const yFrac = 1 - (i/(n-1))*2;
+    const radiusAtY = Math.sqrt(1 - yFrac*yFrac);
+    const theta = goldenAngle * i;
+    const x = Math.cos(theta)*radiusAtY;
+    const z = Math.sin(theta)*radiusAtY;
+    const pos = new THREE.Vector3(x, yFrac, z).multiplyScalar(RADIUS);
+
+    const sprite = makeIconSprite(item);
+    sprite.position.copy(pos);
+    globeRoot.add(sprite);
+  });
+
+  const dustCount = 80;
+  const dustGeo = new THREE.BufferGeometry();
+  const dustPos = new Float32Array(dustCount*3);
+  for(let i=0;i<dustCount;i++){
+    const r = RADIUS*1.7 + Math.random()*2.2;
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.acos(Math.random()*2-1);
+    dustPos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
+    dustPos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
+    dustPos[i*3+2] = r*Math.cos(phi);
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos,3));
+  const dustMat = new THREE.PointsMaterial({ color:0x9d96ff, size:0.03, transparent:true, opacity:0.5 });
+  scene.add(new THREE.Points(dustGeo, dustMat));
+
+  function resize(){
+    const w = stage.clientWidth;
+    const h = stage.clientHeight;
+    if(w===0||h===0) return;
+    renderer.setSize(w,h,false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let autoSpin = true;
+  let dragging = false;
+  let lastX=0, lastY=0;
+  let velY=0.0028, velX=0;
+
+  function pointerDown(x,y){
+    dragging = true; autoSpin = false;
+    lastX = x; lastY = y;
+    stage.style.cursor = 'grabbing';
+  }
+  function pointerMove(x,y){
+    if(!dragging) return;
+    const dx = x-lastX, dy = y-lastY;
+    globeRoot.rotation.y += dx*0.005;
+    globeRoot.rotation.x += dy*0.005;
+    globeRoot.rotation.x = Math.max(-1.1, Math.min(1.1, globeRoot.rotation.x));
+    velY = dx*0.0002;
+    velX = dy*0.0002;
+    lastX=x; lastY=y;
+  }
+  function pointerUp(){
+    dragging = false;
+    stage.style.cursor = 'grab';
+    setTimeout(()=>{ if(!dragging) autoSpin = true; }, 2200);
+  }
+
+  stage.addEventListener('mousedown', e=>pointerDown(e.clientX,e.clientY));
+  window.addEventListener('mousemove', e=>pointerMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup', pointerUp);
+
+  stage.addEventListener('touchstart', e=>{
+    const t = e.touches[0]; pointerDown(t.clientX,t.clientY);
+  }, {passive:true});
+  stage.addEventListener('touchmove', e=>{
+    const t = e.touches[0]; pointerMove(t.clientX,t.clientY);
+  }, {passive:true});
+  stage.addEventListener('touchend', pointerUp);
+
+  let visible = true;
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ visible = e.isIntersecting; });
+  }, {threshold:0.05});
+  io.observe(stage);
+
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!visible) return;
+
+    if(autoSpin){
+      globeRoot.rotation.y += 0.0024;
+    } else if(!dragging){
+      globeRoot.rotation.y += velY;
+      globeRoot.rotation.x += velX;
+      velY *= 0.94; velX *= 0.94;
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+})();
+
+/* ---------- 13. PROFILE TILT (hero) ---------- */
 (function profileTilt(){
   const frame = document.getElementById('profileFrame');
   if(!frame) return;

@@ -209,6 +209,36 @@ body.hovered #cur-ring{width:52px;height:52px;opacity:.15;border-color:var(--v)}
 .stag.green:hover{border-color:rgba(16,185,129,.4);color:#6ee7b7}
 .stag.amber:hover{border-color:rgba(245,158,11,.4);color:#fcd34d}
 
+/* CSS: SKILLS — 3D GLOBE */
+.skills-sec{overflow:hidden}
+.skills-layout{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:3rem;align-items:center}
+
+.globe-stage{position:relative;width:100%;aspect-ratio:1/1;max-width:440px;justify-self:center;border-radius:50%;cursor:grab}
+.globe-stage:active{cursor:grabbing}
+.globe-stage canvas{width:100%!important;height:100%!important;display:block;position:relative;z-index:1}
+.globe-glow-bg{position:absolute;inset:-15%;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 65%);border-radius:50%;animation:glow-pulse 4s ease-in-out infinite;pointer-events:none}
+.globe-hint{position:absolute;bottom:-2.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--t3);letter-spacing:.04em;white-space:nowrap}
+.globe-hint i{font-size:.65rem;color:var(--v)}
+
+.skills-lists{display:flex;flex-direction:column;gap:1.75rem}
+.sk-block{padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.sk-block:last-child{border-bottom:none;padding-bottom:0}
+.sk-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.9rem}
+.sk-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:var(--v)}
+.sk-ico.cyan{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.25);color:var(--c)}
+.sk-ico.green{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.25);color:var(--green)}
+.sk-ico.amber{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:var(--amber)}
+.sk-head h3{font-size:.95rem;font-weight:700}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+.stag{display:inline-flex;align-items:center;padding:4px 11px;border-radius:6px;font-size:.75rem;font-weight:500;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--t2);transition:all .2s;cursor:default}
+.stag:hover{color:var(--t1);border-color:var(--border2);background:rgba(255,255,255,.06);transform:translateY(-1px)}
+.stag.primary:hover{border-color:rgba(124,58,237,.4);color:#c4b5fd}
+.stag.cyan:hover{border-color:rgba(6,182,212,.4);color:#67e8f9}
+.stag.green:hover{border-color:rgba(16,185,129,.4);color:#6ee7b7}
+.stag.amber:hover{border-color:rgba(245,158,11,.4);color:#fcd34d}
+
+
 /* ══════════════════ EXPERIENCE TIMELINE ══════════════════ */
 .timeline{position:relative;max-width:880px;margin:0 auto}
 .timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--v),transparent);transform:translateX(-50%)}
