@@ -238,6 +238,16 @@ body.hovered #cur-ring{width:52px;height:52px;opacity:.15;border-color:var(--v)}
 .stag.green:hover{border-color:rgba(16,185,129,.4);color:#6ee7b7}
 .stag.amber:hover{border-color:rgba(245,158,11,.4);color:#fcd34d}
 
+/* Globe caption under canvas */
+.globe-caption-wrap{display:flex;justify-content:center;margin-top:1rem}
+.globe-caption{max-width:420px;text-align:center}
+.globe-caption .sec-tag{display:block;font-family:var(--mono);font-size:.7rem;color:var(--c);letter-spacing:.18em;margin-bottom:.5rem}
+.globe-caption h3{font-size:1.4rem;margin:0;color:var(--t1);letter-spacing:-.02em}
+.globe-caption p{color:var(--t2);margin-top:.4rem}
+
+/* hide old drag hint if present */
+.globe-hint{display:none}
+
 
 /* ══════════════════ EXPERIENCE TIMELINE ══════════════════ */
 .timeline{position:relative;max-width:880px;margin:0 auto}

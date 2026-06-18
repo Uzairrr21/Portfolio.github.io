@@ -409,37 +409,36 @@ function sendMsg(){
   const canvas = document.getElementById('skillGlobe');
   if(!stage || !canvas || typeof THREE === 'undefined') return;
 
+  // compact set of main skill icons (try to load image assets/ fallback to text)
   const ICONS = [
-    {label:'Python',     short:'Py',   color:'#3776ab'},
-    {label:'PyTorch',    short:'PT',   color:'#ee4c2c'},
-    {label:'TensorFlow', short:'TF',   color:'#ff8f00'},
-    {label:'Keras',      short:'Ke',   color:'#d0006f'},
-    {label:'Scikit-learn', short:'Sk', color:'#f59e0b'},
-    {label:'OpenCV',     short:'CV',   color:'#5c3ee8'},
-    {label:'Pandas',     short:'Pd',   color:'#150050'},
-    {label:'NumPy',      short:'Np',   color:'#4d77cf'},
-    {label:'Matplotlib', short:'Mp',   color:'#f97316'},
-    {label:'MediaPipe',  short:'MP',   color:'#06b6d4'},
-    {label:'Transformer',short:'Tr',   color:'#7c3aed'},
-    {label:'CNN',        short:'CNN',  color:'#0ea5b3'},
-    {label:'Machine Learning', short:'ML', color:'#22c55e'},
-    {label:'Deep Learning', short:'DL', color:'#a855f7'},
-    {label:'Computer Vision', short:'CVs', color:'#06b6d4'},
-    {label:'NLP',        short:'NLP',  color:'#ef4444'},
-    {label:'Data Analysis', short:'DA', color:'#0ea5a4'},
-    {label:'React',      short:'⚛',    color:'#61dafb'},
-    {label:'Node.js',    short:'JS',   color:'#5fa04e'},
-    {label:'TypeScript', short:'TS',   color:'#3178c6'},
-    {label:'Docker',     short:'Dk',   color:'#2496ed'},
-    {label:'GitHub',     short:'Git',  color:'#e6edf3'},
-    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d'},
-    {label:'MongoDB',    short:'Mg',   color:'#47a248'},
-    {label:'C++',        short:'C++',  color:'#00599c'},
-    {label:'FastAPI',    short:'API',  color:'#06b6d4'},
-    {label:'Vercel',     short:'▲',    color:'#a1a1aa'},
-    {label:'LangChain',  short:'LC',   color:'#22d3ee'},
-    {label:'Linux',      short:'Lx',   color:'#fcc624'},
+    {label:'Python', short:'Py', color:'#3776ab', img:'python'},
+    {label:'PyTorch', short:'PT', color:'#ee4c2c', img:'pytorch'},
+    {label:'TensorFlow', short:'TF', color:'#ff8f00', img:'tensorflow'},
+    {label:'Keras', short:'Ke', color:'#d0006f', img:'keras'},
+    {label:'Scikit-learn', short:'Sk', color:'#f59e0b', img:'scikitlearn'},
+    {label:'OpenCV', short:'CV', color:'#5c3ee8', img:'opencv'},
+    {label:'NumPy', short:'Np', color:'#4d77cf', img:'numpy'},
+    {label:'Pandas', short:'Pd', color:'#150050', img:'pandas'},
+    {label:'React', short:'⚛', color:'#61dafb', img:'react'},
+    {label:'Node.js', short:'JS', color:'#5fa04e', img:'nodejs'},
+    {label:'Docker', short:'Dk', color:'#2496ed', img:'docker'},
+    {label:'GitHub', short:'Git', color:'#e6edf3', img:'github'},
   ];
+
+  const DESCRIPTIONS = {
+    'Python':'Core ML/DL — modeling · data pipelines · tooling',
+    'PyTorch':'Research & training — neural networks, optimization',
+    'TensorFlow':'Production models & TF ecosystem',
+    'Keras':'High-level model prototyping',
+    'Scikit-learn':'Classical ML — features & evaluation',
+    'OpenCV':'Computer vision pipelines & preprocessing',
+    'NumPy':'Numerical foundations — arrays & ops',
+    'Pandas':'Data cleaning & analysis',
+    'React':'Frontend UI & interactivity',
+    'Node.js':'Backend JavaScript runtime',
+    'Docker':'Containerization & deployment',
+    'GitHub':'Source control & CI',
+  };
 
   function makeIconSprite(item){
     const size = 160;
@@ -447,34 +446,63 @@ function sendMsg(){
     cv.width = size; cv.height = size;
     const ctx = cv.getContext('2d');
 
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(13,18,32,0.94)';
-    ctx.fill();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.stroke();
+    function drawBase(){
+      ctx.clearRect(0,0,size,size);
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(13,18,32,0.94)';
+      ctx.fill();
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = item.color + '88';
+      ctx.stroke();
+    }
 
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = item.color + '88';
-    ctx.stroke();
+    drawBase();
 
-    const fontSize = item.short.length > 2 ? 38 : 50;
-    ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
-    ctx.fillStyle = item.color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.shadowColor = item.color;
-    ctx.shadowBlur = 22;
-    ctx.fillText(item.short, size/2, size/2+2);
+    // try to load an image asset; if not available, fall back to text badge
+    const slug = (item.img || item.label).toString().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = `assets/icons/${slug}.png`;
+    img.onload = ()=>{
+      drawBase();
+      // draw circular clipped image
+      const s = size*0.62;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, s/2, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.clip();
+      // draw image covering the circle
+      ctx.drawImage(img, size/2 - s/2, size/2 - s/2, s, s);
+      ctx.restore();
+      const texUpdated = sprite.material.map;
+      texUpdated.needsUpdate = true;
+    };
+    img.onerror = ()=>{
+      // fallback: draw short text
+      const fontSize = item.short.length > 2 ? 38 : 50;
+      ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
+      ctx.fillStyle = item.color;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = item.color;
+      ctx.shadowBlur = 22;
+      ctx.fillText(item.short, size/2, size/2+2);
+      const texFail = sprite.material.map;
+      texFail.needsUpdate = true;
+    };
 
     const tex = new THREE.CanvasTexture(cv);
     tex.minFilter = THREE.LinearFilter;
     const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, depthWrite:false });
     const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(0.5,0.5,0.5);
+    sprite.scale.set(0.6,0.6,0.6);
     sprite.userData.label = item.label;
     return sprite;
   }
@@ -504,6 +532,8 @@ function sendMsg(){
   const rimMat = new THREE.MeshBasicMaterial({ color:0x06b6d4, transparent:true, opacity:0.06, side:THREE.BackSide });
   globeRoot.add(new THREE.Mesh(rimGeo, rimMat));
 
+  // create sprites and keep reference for raycasting
+  const sprites = [];
   const n = ICONS.length;
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
   ICONS.forEach((item, i)=>{
@@ -517,13 +547,15 @@ function sendMsg(){
     const sprite = makeIconSprite(item);
     sprite.position.copy(pos);
     globeRoot.add(sprite);
+    sprites.push(sprite);
   });
 
-  const dustCount = 80;
+  // subtle dust
+  const dustCount = 60;
   const dustGeo = new THREE.BufferGeometry();
   const dustPos = new Float32Array(dustCount*3);
   for(let i=0;i<dustCount;i++){
-    const r = RADIUS*1.7 + Math.random()*2.2;
+    const r = RADIUS*1.7 + Math.random()*1.6;
     const theta = Math.random()*Math.PI*2;
     const phi = Math.acos(Math.random()*2-1);
     dustPos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
@@ -531,12 +563,12 @@ function sendMsg(){
     dustPos[i*3+2] = r*Math.cos(phi);
   }
   dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos,3));
-  const dustMat = new THREE.PointsMaterial({ color:0x9d96ff, size:0.03, transparent:true, opacity:0.5 });
+  const dustMat = new THREE.PointsMaterial({ color:0x9d96ff, size:0.03, transparent:true, opacity:0.45 });
   scene.add(new THREE.Points(dustGeo, dustMat));
 
   function resize(){
     const w = stage.clientWidth;
-    const h = stage.clientHeight;
+    const h = stage.clientHeight + 1; // avoid zero
     if(w===0||h===0) return;
     renderer.setSize(w,h,false);
     camera.aspect = w/h;
@@ -545,62 +577,64 @@ function sendMsg(){
   resize();
   window.addEventListener('resize', resize);
 
+  // raycaster to detect hover and update caption
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  const captionTitle = document.getElementById('globeCaptionTitle');
+  const captionDesc = document.getElementById('globeCaptionDesc');
+  let lastLabel = captionTitle ? captionTitle.textContent : '';
+
+  function updateCaption(label){
+    if(!captionTitle || !captionDesc) return;
+    captionTitle.textContent = label;
+    captionDesc.textContent = DESCRIPTIONS[label] || '';
+  }
+  function resetCaption(){
+    if(!captionTitle || !captionDesc) return;
+    captionTitle.textContent = lastLabel || ICONS[0].label;
+    captionDesc.textContent = DESCRIPTIONS[captionTitle.textContent] || '';
+  }
+
+  canvas.addEventListener('mousemove', (e)=>{
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left)/rect.width)*2 - 1;
+    mouse.y = -((e.clientY - rect.top)/rect.height)*2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const ints = raycaster.intersectObjects(sprites, true);
+    if(ints.length){
+      const s = ints[0].object;
+      if(s.userData && s.userData.label) updateCaption(s.userData.label);
+    } else {
+      resetCaption();
+    }
+  }, {passive:true});
+
+  // dragging/rotation controls (kept) and auto-spin
   let autoSpin = true;
   let dragging = false;
   let lastX=0, lastY=0;
   let velY=0.0028, velX=0;
 
-  function pointerDown(x,y){
-    dragging = true; autoSpin = false;
-    lastX = x; lastY = y;
-    stage.style.cursor = 'grabbing';
-  }
-  function pointerMove(x,y){
-    if(!dragging) return;
-    const dx = x-lastX, dy = y-lastY;
-    globeRoot.rotation.y += dx*0.005;
-    globeRoot.rotation.x += dy*0.005;
-    globeRoot.rotation.x = Math.max(-1.1, Math.min(1.1, globeRoot.rotation.x));
-    velY = dx*0.0002;
-    velX = dy*0.0002;
-    lastX=x; lastY=y;
-  }
-  function pointerUp(){
-    dragging = false;
-    stage.style.cursor = 'grab';
-    setTimeout(()=>{ if(!dragging) autoSpin = true; }, 2200);
-  }
+  function pointerDown(x,y){ dragging = true; autoSpin = false; lastX=x; lastY=y; stage.style.cursor='grabbing'; }
+  function pointerMove(x,y){ if(!dragging) return; const dx=x-lastX, dy=y-lastY; globeRoot.rotation.y += dx*0.005; globeRoot.rotation.x += dy*0.005; globeRoot.rotation.x = Math.max(-1.1, Math.min(1.1, globeRoot.rotation.x)); velY = dx*0.0002; velX = dy*0.0002; lastX=x; lastY=y; }
+  function pointerUp(){ dragging=false; stage.style.cursor='grab'; setTimeout(()=>{ if(!dragging) autoSpin=true; }, 1200); }
 
   stage.addEventListener('mousedown', e=>pointerDown(e.clientX,e.clientY));
   window.addEventListener('mousemove', e=>pointerMove(e.clientX,e.clientY));
   window.addEventListener('mouseup', pointerUp);
-
-  stage.addEventListener('touchstart', e=>{
-    const t = e.touches[0]; pointerDown(t.clientX,t.clientY);
-  }, {passive:true});
-  stage.addEventListener('touchmove', e=>{
-    const t = e.touches[0]; pointerMove(t.clientX,t.clientY);
-  }, {passive:true});
+  stage.addEventListener('touchstart', e=>{ const t=e.touches[0]; pointerDown(t.clientX,t.clientY); }, {passive:true});
+  stage.addEventListener('touchmove', e=>{ const t=e.touches[0]; pointerMove(t.clientX,t.clientY); }, {passive:true});
   stage.addEventListener('touchend', pointerUp);
 
   let visible = true;
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ visible = e.isIntersecting; });
-  }, {threshold:0.05});
+  const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ visible = e.isIntersecting; }); }, {threshold:0.05});
   io.observe(stage);
 
   function animate(){
     requestAnimationFrame(animate);
     if(!visible) return;
-
-    if(autoSpin){
-      globeRoot.rotation.y += 0.0024;
-    } else if(!dragging){
-      globeRoot.rotation.y += velY;
-      globeRoot.rotation.x += velX;
-      velY *= 0.94; velX *= 0.94;
-    }
-
+    if(autoSpin){ globeRoot.rotation.y += 0.0024; }
+    else if(!dragging){ globeRoot.rotation.y += velY; globeRoot.rotation.x += velX; velY *= 0.94; velX *= 0.94; }
     renderer.render(scene, camera);
   }
   animate();
