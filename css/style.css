@@ -378,6 +378,8 @@ body.hovered #cur-ring{width:52px;height:52px;opacity:.15;border-color:var(--v)}
   .profile-frame{width:280px;height:280px}
   .skills-grid{grid-template-columns:1fr 1fr}
   .about-grid{grid-template-columns:1fr}
+  .skills-layout{grid-template-columns:1fr;gap:2.5rem}
+  .globe-stage{margin:0 auto}
 }
 @media(max-width:900px){
   .proj-grid{grid-template-columns:1fr 1fr}
@@ -396,6 +398,9 @@ body.hovered #cur-ring{width:52px;height:52px;opacity:.15;border-color:var(--v)}
   .skills-grid{grid-template-columns:1fr}
   .proj-grid{grid-template-columns:1fr}
   .research-callout{flex-direction:column;gap:1rem}
+  .globe-stage{max-width:320px}
+  .globe-hint{bottom:-1.9rem;font-size:.65rem}
+  .sk-block{text-align:left}
 }
 @media(max-width:480px){
   .hero-h1{font-size:2.2rem}
@@ -404,6 +409,9 @@ body.hovered #cur-ring{width:52px;height:52px;opacity:.15;border-color:var(--v)}
   .filter-tabs{gap:.35rem}
   .modal-metrics{grid-template-columns:1fr 1fr}
   .hero-scroll{display:none}
+  .globe-stage{max-width:240px}
+  .globe-hint{font-size:.6rem;gap:.3rem}
+  .skills-layout{gap:2rem}
 }
 
 /* ── Magnetic button helper (applied by JS) ── */
