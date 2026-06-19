@@ -439,7 +439,7 @@ function sendMsg(){
   // 2. This is your brand new replacement function
   function makeIconSprite(item){
     // Load the SVG file from the icons folder
-    const tex = textureLoader.load(`icons/${item.file}`);
+    const tex = textureLoader.load(`assets/icons/${item.file}`);
     
     // Create the material using the loaded image
     const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
