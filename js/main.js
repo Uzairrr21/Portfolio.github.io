@@ -446,7 +446,7 @@ function sendMsg(){
     const sprite = new THREE.Sprite(mat);
     
     // You can adjust this number (e.g., 0.5 to 0.8) if the SVGs look too big or too small
-    const baseScale = 0.30; 
+    const baseScale = 0.25; 
     sprite.scale.set(baseScale, baseScale, baseScale);
     
     sprite.userData.label = item.label;
