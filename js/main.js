@@ -434,19 +434,60 @@ function sendMsg(){
   ];
 
   // 1. Put this line JUST ABOVE the function so it only initializes once
-  const textureLoader = new THREE.TextureLoader();
-
-  // 2. This is your brand new replacement function
   function makeIconSprite(item){
-    // Load the SVG file from the icons folder
-    const tex = textureLoader.load(`assets/icons/${item.file}`);
-    
-    // Create the material using the loaded image
+    const size = 256; // High resolution for crisp edges
+    const cv = document.createElement('canvas');
+    cv.width = size; cv.height = size;
+    const ctx = cv.getContext('2d');
+    const cx = size/2, cy = size/2, r = size*0.35; // Badge radius
+
+    // 1. Soft glowing halo behind the badge (Purple tint to match the globe)
+    const halo = ctx.createRadialGradient(cx,cy, r*0.4, cx,cy, r*1.8);
+    halo.addColorStop(0, 'rgba(124, 58, 237, 0.25)'); 
+    halo.addColorStop(1, 'rgba(124, 58, 237, 0)');
+    ctx.fillStyle = halo;
+    ctx.fillRect(0,0,size,size);
+
+    // 2. Sleek dark glassy backplate
+    const bg = ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
+    bg.addColorStop(0,'rgba(30, 35, 50, 0.95)');
+    bg.addColorStop(1,'rgba(10, 15, 25, 0.95)');
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.fillStyle = bg;
+    ctx.fill();
+
+    // 3. Crisp bright outer border
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.lineWidth = size*0.015;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+    ctx.stroke();
+
+    // 4. Subtle inner border for a 3D depth effect
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.85,0,Math.PI*2);
+    ctx.lineWidth = size*0.008;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.stroke();
+
+    // 5. Create the Three.js material from the canvas
+    const tex = new THREE.CanvasTexture(cv);
+    tex.minFilter = THREE.LinearFilter;
     const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
     const sprite = new THREE.Sprite(mat);
-    
-    // You can adjust this number (e.g., 0.5 to 0.8) if the SVGs look too big or too small
-    const baseScale = 0.25; 
+
+    // 6. Load the SVG asynchronously and stamp it into the center of the glass badge
+    const img = new Image();
+    img.src = `assets/icons/${item.file}`;
+    img.onload = () => {
+      const iconSize = r * 1.1; // Sizes the SVG nicely inside the circle
+      ctx.drawImage(img, cx - iconSize/2, cy - iconSize/2, iconSize, iconSize);
+      tex.needsUpdate = true; // Tells Three.js to refresh the visual
+    };
+
+    // 7. Adjust overall badge size on the globe
+    const baseScale = 0.45; 
     sprite.scale.set(baseScale, baseScale, baseScale);
     
     sprite.userData.label = item.label;
