@@ -409,97 +409,93 @@ function sendMsg(){
   const canvas = document.getElementById('skillGlobe');
   if(!stage || !canvas || typeof THREE === 'undefined') return;
 
-  // Text-label badges — no external glyph-font dependency, so rendering
-  // never silently breaks on a wrong/unsupported icon codepoint.
+  // Text-label badges — drawn entirely on canvas (no external icon assets to
+  // fetch), so every node renders identically and immediately, with no
+  // flash-of-fallback-text or broken-image requests.
   const ICONS = [
-    {label:'Python',     short:'Py',   color:'#3776ab', img:'python'},
-    {label:'PyTorch',    short:'PT',   color:'#ee4c2c', img:'pytorch'},
-    {label:'TensorFlow', short:'TF',   color:'#ff8f00', img:'tensorflow'},
-    {label:'React',      short:'⚛',    color:'#61dafb', img:'react'},
-    {label:'Node.js',    short:'JS',   color:'#5fa04e', img:'nodejs'},
-    {label:'TypeScript', short:'TS',   color:'#3178c6', img:'typescript'},
-    {label:'Docker',     short:'Dk',   color:'#2496ed', img:'docker'},
-    {label:'GitHub',     short:'Git',  color:'#e6edf3', img:'github'},
-    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d', img:'huggingface'},
-    {label:'MongoDB',    short:'Mg',   color:'#47a248', img:'mongodb'},
-    {label:'OpenCV',     short:'CV',   color:'#5c3ee8', img:'opencv'},
-    {label:'C++',        short:'C++',  color:'#00599c', img:'cpp'},
-    {label:'FastAPI',    short:'API',  color:'#06b6d4', img:'fastapi'},
-    {label:'Deep Learning', short:'AI',color:'#a855f7', img:'ai'},
-    {label:'Vercel',     short:'▲',    color:'#a1a1aa', img:'vercel'},
-    {label:'LangChain',  short:'LC',   color:'#22d3ee', img:'langchain'},
-    {label:'Linux',      short:'Lx',   color:'#fcc624', img:'linux'},
-    {label:'NumPy',      short:'Np',   color:'#4d77cf', img:'numpy'},
+    {label:'Python',     short:'Py',   color:'#3776ab'},
+    {label:'PyTorch',    short:'PT',   color:'#ee4c2c'},
+    {label:'TensorFlow', short:'TF',   color:'#ff8f00'},
+    {label:'React',      short:'⚛',    color:'#61dafb'},
+    {label:'Node.js',    short:'JS',   color:'#5fa04e'},
+    {label:'TypeScript', short:'TS',   color:'#3178c6'},
+    {label:'Docker',     short:'Dk',   color:'#2496ed'},
+    {label:'GitHub',     short:'Git',  color:'#e6edf3'},
+    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d'},
+    {label:'MongoDB',    short:'Mg',   color:'#47a248'},
+    {label:'OpenCV',     short:'CV',   color:'#5c3ee8'},
+    {label:'C++',        short:'C++',  color:'#00599c'},
+    {label:'FastAPI',    short:'API',  color:'#06b6d4'},
+    {label:'Deep Learning', short:'AI',color:'#a855f7'},
+    {label:'Vercel',     short:'▲',    color:'#a1a1aa'},
+    {label:'LangChain',  short:'LC',   color:'#22d3ee'},
+    {label:'Linux',      short:'Lx',   color:'#fcc624'},
+    {label:'NumPy',      short:'Np',   color:'#4d77cf'},
   ];
 
   function makeIconSprite(item){
-    const size = 160;
+    const size = 220;
     const cv = document.createElement('canvas');
     cv.width = size; cv.height = size;
     const ctx = cv.getContext('2d');
+    const cx = size/2, cy = size/2, r = size*0.34;
 
-    function drawBase(){
-      ctx.clearRect(0,0,size,size);
-      // outer circle
-      ctx.beginPath();
-      ctx.arc(size/2, size/2, size/2-10, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(13,18,32,0.94)';
-      ctx.fill();
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-      ctx.stroke();
-      // inner ring accent
-      ctx.beginPath();
-      ctx.arc(size/2, size/2, size/2-16, 0, Math.PI*2);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = item.color + '88';
-      ctx.stroke();
-    }
+    // soft outer halo, tinted to the tech's brand color
+    const halo = ctx.createRadialGradient(cx,cy, r*0.4, cx,cy, r*2.1);
+    halo.addColorStop(0, item.color + '3d');
+    halo.addColorStop(1, item.color + '00');
+    ctx.fillStyle = halo;
+    ctx.fillRect(0,0,size,size);
 
-    drawBase();
+    // badge backplate — subtle diagonal gradient + glass feel
+    const bg = ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
+    bg.addColorStop(0,'rgba(24,30,48,0.96)');
+    bg.addColorStop(1,'rgba(9,12,20,0.96)');
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.fillStyle = bg;
+    ctx.fill();
 
-    const slug = (item.img || item.label).toString().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    // try svg first (we added SVG placeholders), then fallback to png, then text
-    img.src = `assets/icons/${slug}.svg`;
-    img.onload = ()=>{
-      drawBase();
-      const s = size*0.62;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(size/2, size/2, s/2, 0, Math.PI*2);
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(img, size/2 - s/2, size/2 - s/2, s, s);
-      ctx.restore();
-      tex.needsUpdate = true;
-    };
-    img.onerror = ()=>{
-      // try png fallback (some icons might be png)
-      if(!img.__triedPng){
-        img.__triedPng = true;
-        img.src = `assets/icons/${slug}.png`;
-        return;
-      }
-      // final fallback: draw short text
-      const fontSize = item.short.length > 2 ? 38 : 50;
-      ctx.font = `800 ${fontSize}px 'Fira Code', monospace`;
-      ctx.fillStyle = item.color;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.shadowColor = item.color;
-      ctx.shadowBlur = 22;
-      ctx.fillText(item.short, size/2, size/2+2);
-      tex.needsUpdate = true;
-    };
+    // crisp outer ring in the brand color
+    ctx.lineWidth = size*0.018;
+    ctx.strokeStyle = item.color + 'cc';
+    ctx.stroke();
+
+    // faint inner ring for a layered, polished edge
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.84,0,Math.PI*2);
+    ctx.lineWidth = size*0.006;
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+    ctx.stroke();
+
+    // top-left specular highlight (gives the badge a glassy, 3D feel)
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.96,Math.PI*1.05,Math.PI*1.55);
+    ctx.lineWidth = size*0.03;
+    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    // label
+    const fontSize = item.short.length > 2 ? size*0.20 : size*0.27;
+    ctx.font = `700 ${fontSize}px 'Fira Code', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = item.color;
+    ctx.shadowBlur = size*0.07;
+    ctx.fillStyle = item.color;
+    ctx.fillText(item.short, cx, cy + size*0.012);
+    ctx.shadowBlur = 0;
 
     const tex = new THREE.CanvasTexture(cv);
     tex.minFilter = THREE.LinearFilter;
+    tex.anisotropy = 4;
     const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, depthWrite:false });
     const sprite = new THREE.Sprite(mat);
     sprite.scale.set(0.48,0.48,0.48);
     sprite.userData.label = item.label;
+    sprite.userData.baseScale = 0.48;
+    sprite.userData.baseOpacity = 1;
     return sprite;
   }
 
@@ -515,9 +511,10 @@ function sendMsg(){
 
   const RADIUS = 2.5;
 
-  // Wireframe sphere shell
-  const wireGeo = new THREE.SphereGeometry(RADIUS, 22, 16);
-  const wireMat = new THREE.MeshBasicMaterial({ color:0x3a4a7c, wireframe:true, transparent:true, opacity:0.35 });
+  // Wireframe sphere shell — slightly finer mesh + dimmer for a cleaner,
+  // less "low-poly" silhouette
+  const wireGeo = new THREE.SphereGeometry(RADIUS, 28, 20);
+  const wireMat = new THREE.MeshBasicMaterial({ color:0x3a4a7c, wireframe:true, transparent:true, opacity:0.22 });
   const wireSphere = new THREE.Mesh(wireGeo, wireMat);
   globeRoot.add(wireSphere);
 
@@ -530,6 +527,18 @@ function sendMsg(){
   const rimGeo = new THREE.SphereGeometry(RADIUS*1.015, 24, 24);
   const rimMat = new THREE.MeshBasicMaterial({ color:0x06b6d4, transparent:true, opacity:0.06, side:THREE.BackSide });
   globeRoot.add(new THREE.Mesh(rimGeo, rimMat));
+
+  // Two faint great-circle rings (equator + meridian) — a small touch that
+  // reads as a proper "globe" rather than a generic sphere
+  function makeRing(rotX, rotY){
+    const ringGeo = new THREE.RingGeometry(RADIUS*0.998, RADIUS*1.002, 64, 1);
+    const ringMat = new THREE.MeshBasicMaterial({ color:0x9d96ff, transparent:true, opacity:0.14, side:THREE.DoubleSide });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = rotX; ring.rotation.y = rotY;
+    return ring;
+  }
+  globeRoot.add(makeRing(Math.PI/2, 0));
+  globeRoot.add(makeRing(Math.PI/2, Math.PI/2));
 
   // Distribute icons on sphere using Fibonacci lattice and apply simple relaxation
   const n = ICONS.length;
@@ -568,10 +577,12 @@ function sendMsg(){
   }
 
   // create sprites at relaxed positions
+  const sprites = [];
   ICONS.forEach((item,i)=>{
     const sprite = makeIconSprite(item);
     sprite.position.copy(positions[i]);
     globeRoot.add(sprite);
+    sprites.push(sprite);
   });
 
   // Subtle starfield dust around the globe
@@ -646,6 +657,12 @@ function sendMsg(){
   }, {threshold:0.05});
   io.observe(stage);
 
+  // reusable vectors for the per-frame depth-fade pass (avoids per-frame allocation)
+  const _center = new THREE.Vector3();
+  const _world = new THREE.Vector3();
+  const _normal = new THREE.Vector3();
+  const _toCam = new THREE.Vector3();
+
   function animate(){
     requestAnimationFrame(animate);
     if(!visible) return;
@@ -658,6 +675,22 @@ function sendMsg(){
       globeRoot.rotation.x += velX;
       velY *= 0.94; velX *= 0.94;
     }
+
+    // depth-fade pass: icons facing the camera read crisp and full-size,
+    // icons on the far side of the globe recede — gives the sphere real
+    // dimensionality instead of every badge looking flat/equal.
+    globeRoot.updateMatrixWorld();
+    globeRoot.getWorldPosition(_center);
+    sprites.forEach(sprite=>{
+      sprite.getWorldPosition(_world);
+      _normal.copy(_world).sub(_center).normalize();
+      _toCam.copy(camera.position).sub(_world).normalize();
+      const facing = (_normal.dot(_toCam) + 1) / 2; // 0 = far side, 1 = facing camera
+      const eased = facing*facing*(3 - 2*facing);    // smoothstep
+      const scale = sprite.userData.baseScale * (0.6 + eased*0.55);
+      sprite.scale.set(scale,scale,scale);
+      sprite.material.opacity = 0.32 + eased*0.68;
+    });
 
     // sprites always face camera automatically (THREE.Sprite default)
     renderer.render(scene, camera);
