@@ -413,89 +413,46 @@ function sendMsg(){
   // fetch), so every node renders identically and immediately, with no
   // flash-of-fallback-text or broken-image requests.
   const ICONS = [
-    {label:'Python',     short:'Py',   color:'#3776ab'},
-    {label:'PyTorch',    short:'PT',   color:'#ee4c2c'},
-    {label:'TensorFlow', short:'TF',   color:'#ff8f00'},
-    {label:'React',      short:'⚛',    color:'#61dafb'},
-    {label:'Node.js',    short:'JS',   color:'#5fa04e'},
-    {label:'TypeScript', short:'TS',   color:'#3178c6'},
-    {label:'Docker',     short:'Dk',   color:'#2496ed'},
-    {label:'GitHub',     short:'Git',  color:'#e6edf3'},
-    {label:'HuggingFace',short:'🤗',   color:'#ffcc4d'},
-    {label:'MongoDB',    short:'Mg',   color:'#47a248'},
-    {label:'OpenCV',     short:'CV',   color:'#5c3ee8'},
-    {label:'C++',        short:'C++',  color:'#00599c'},
-    {label:'FastAPI',    short:'API',  color:'#06b6d4'},
-    {label:'Deep Learning', short:'AI',color:'#a855f7'},
-    {label:'Vercel',     short:'▲',    color:'#a1a1aa'},
-    {label:'LangChain',  short:'LC',   color:'#22d3ee'},
-    {label:'Linux',      short:'Lx',   color:'#fcc624'},
-    {label:'NumPy',      short:'Np',   color:'#4d77cf'},
+    {label:'Python',        file:'python.svg'},
+    {label:'PyTorch',       file:'pytorch.svg'},
+    {label:'TensorFlow',    file:'tensorflow.svg'},
+    {label:'React',         file:'react.svg'},
+    {label:'Node.js',       file:'nodejs.svg'},
+    {label:'TypeScript',    file:'typescript.svg'},
+    {label:'Docker',        file:'docker.svg'},
+    {label:'GitHub',        file:'github.svg'},
+    {label:'HuggingFace',   file:'huggingface.svg'},
+    {label:'MongoDB',       file:'mongodb.svg'},
+    {label:'OpenCV',        file:'opencv.svg'},
+    {label:'FastAPI',       file:'fastapi.svg'},
+    {label:'Deep Learning', file:'deeplearning.svg'},
+    {label:'Vercel',        file:'vercel.svg'},
+    {label:'LangChain',     file:'langchain.svg'},
+    {label:'Linux',         file:'linux.svg'},
+    {label:'NumPy',         file:'numpy.svg'},
+    {label:'Keras',         file:'keras.svg'} 
   ];
 
+  // 1. Put this line JUST ABOVE the function so it only initializes once
+  const textureLoader = new THREE.TextureLoader();
+
+  // 2. This is your brand new replacement function
   function makeIconSprite(item){
-    const size = 220;
-    const cv = document.createElement('canvas');
-    cv.width = size; cv.height = size;
-    const ctx = cv.getContext('2d');
-    const cx = size/2, cy = size/2, r = size*0.34;
-
-    // soft outer halo, tinted to the tech's brand color
-    const halo = ctx.createRadialGradient(cx,cy, r*0.4, cx,cy, r*2.1);
-    halo.addColorStop(0, item.color + '3d');
-    halo.addColorStop(1, item.color + '00');
-    ctx.fillStyle = halo;
-    ctx.fillRect(0,0,size,size);
-
-    // badge backplate — subtle diagonal gradient + glass feel
-    const bg = ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
-    bg.addColorStop(0,'rgba(24,30,48,0.96)');
-    bg.addColorStop(1,'rgba(9,12,20,0.96)');
-    ctx.beginPath();
-    ctx.arc(cx,cy,r,0,Math.PI*2);
-    ctx.fillStyle = bg;
-    ctx.fill();
-
-    // crisp outer ring in the brand color
-    ctx.lineWidth = size*0.018;
-    ctx.strokeStyle = item.color + 'cc';
-    ctx.stroke();
-
-    // faint inner ring for a layered, polished edge
-    ctx.beginPath();
-    ctx.arc(cx,cy,r*0.84,0,Math.PI*2);
-    ctx.lineWidth = size*0.006;
-    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-    ctx.stroke();
-
-    // top-left specular highlight (gives the badge a glassy, 3D feel)
-    ctx.beginPath();
-    ctx.arc(cx,cy,r*0.96,Math.PI*1.05,Math.PI*1.55);
-    ctx.lineWidth = size*0.03;
-    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    // label
-    const fontSize = item.short.length > 2 ? size*0.20 : size*0.27;
-    ctx.font = `700 ${fontSize}px 'Fira Code', monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.shadowColor = item.color;
-    ctx.shadowBlur = size*0.07;
-    ctx.fillStyle = item.color;
-    ctx.fillText(item.short, cx, cy + size*0.012);
-    ctx.shadowBlur = 0;
-
-    const tex = new THREE.CanvasTexture(cv);
-    tex.minFilter = THREE.LinearFilter;
-    tex.anisotropy = 4;
-    const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, depthWrite:false });
+    // Load the SVG file from the icons folder
+    const tex = textureLoader.load(`icons/${item.file}`);
+    
+    // Create the material using the loaded image
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
     const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(0.48,0.48,0.48);
+    
+    // You can adjust this number (e.g., 0.5 to 0.8) if the SVGs look too big or too small
+    const baseScale = 0.55; 
+    sprite.scale.set(baseScale, baseScale, baseScale);
+    
     sprite.userData.label = item.label;
-    sprite.userData.baseScale = 0.48;
+    sprite.userData.baseScale = baseScale;
     sprite.userData.baseOpacity = 1;
+    
     return sprite;
   }
 
